@@ -1,0 +1,123 @@
+/* ─── Reset CSS ─────────────────────────────────────────────────
+   Tailored for Dr. Quan & Associates static site.
+   Loaded before style.css on every page.
+──────────────────────────────────────────────────────────────── */
+
+/* 1. Box model */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Root defaults */
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  tab-size: 4;
+}
+
+/* 3. Body */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* 4. Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: 1.2;
+}
+
+p, li, blockquote {
+  line-height: 1.6;
+}
+
+/* 5. Links */
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* 6. Lists */
+ul, ol {
+  list-style: none;
+}
+
+/* 7. Media */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+  border-style: none;
+}
+
+/* 8. Forms & interactive elements */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* 9. Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 10. Misc */
+hr {
+  border: none;
+  border-top: 1px solid currentColor;
+  opacity: 0.2;
+}
+
+/* Remove tap highlight on mobile */
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Hidden utility */
+[hidden] {
+  display: none !important;
+}

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dr. Quan &amp; Associates – Eye Clinic</title>
+  <meta name="description" content="Comprehensive optometry clinics in Edmonton and Calgary equipped with the latest diagnostic technology. Book your appointment today." />
+  <!-- <link rel="icon" href="images/fav.png" /> -->
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ─── Navbar ──────────────────────────────────────────────── -->
+  <header class="navbar not-scrolled" id="navbar">
+    <a href="#hero" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+
+    <nav class="desktop-nav">
+      <a href="#equipments">Equipments</a>
+      <a href="#eye-exams">Exams</a>
+      <a href="locations.html">Locations</a>
+      <a href="faq.html">FAQ</a>
+      <a href="appointments.html" class="nav-book-btn">Book Appointment</a>
+    </nav>
+
+  </header>
+
+  <!-- ─── Hero ────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-card">
+      <img class="hero-bg" src="images/logos/eyes.jpg" alt="Eye examination" />
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <h1>
+          <span style="display:block;margin-bottom:10px;">Clear focus on</span>
+          <div class="hero-slider-row">
+            <span>your</span>
+            <div class="slide-container">
+              <div class="slide-wrapper" id="slideWrapper">
+                <!-- Vision -->
+                <div class="slide-item">
+                  <div class="slide-icon"><img src="images/ideas.svg" alt="" /></div>
+                  <span>Vision</span>
+                </div>
+                <!-- Family -->
+                <div class="slide-item">
+                  <div class="slide-icon"><img src="images/concepts.svg" alt="" /></div>
+                  <span>Family</span>
+                </div>
+                <!-- Eye Health -->
+                <div class="slide-item">
+                  <div class="slide-icon"><img src="images/designs.svg" alt="" /></div>
+                  <span>Eye Health</span>
+                </div>
+                <!-- Future -->
+                <div class="slide-item">
+                  <div class="slide-icon"><img src="images/code.svg" alt="" /></div>
+                  <span>Future</span>
+                </div>
+                <!-- Comfort (loops back) -->
+                <div class="slide-item">
+                  <div class="slide-icon"><img src="images/ideas.svg" alt="" /></div>
+                  <span>Comfort</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </h1>
+
+        <p class="hero-subtitle">
+          Comprehensive optometry clinics equipped with the latest diagnostic technology.
+          Book your appointment easily online or by phone.
+        </p>
+
+        <a href="appointments.html" class="cta-btn">Book Appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Stats Counter ────────────────────────────────────────── -->
+  <div id="counter">
+    <div class="counter-grid">
+      <div class="counter-card" data-target="20" data-suffix="+">
+        <div class="counter-number"><span class="count-val">0</span>+</div>
+        <div class="counter-label">Years of Experience</div>
+      </div>
+      <div class="counter-card" data-target="98" data-suffix="%">
+        <div class="counter-number"><span class="count-val">0</span>%</div>
+        <div class="counter-label">Patient Satisfaction</div>
+      </div>
+      <div class="counter-card" data-target="11" data-suffix="">
+        <div class="counter-number"><span class="count-val">0</span></div>
+        <div class="counter-label">Convenient Locations</div>
+      </div>
+      <div class="counter-card" data-target="4" data-suffix="+">
+        <div class="counter-number"><span class="count-val">0</span>+</div>
+        <div class="counter-label">Advanced Diagnostic Tools</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Equipments ───────────────────────────────────────────── -->
+  <section id="equipments">
+    <div class="section-wrap">
+      <div class="section-header reveal">
+        <p class="section-eyebrow">Technology</p>
+        <h2 class="section-title">Equipped for excellence.</h2>
+      </div>
+
+      <div class="showcase-layout">
+        <!-- Main featured machine -->
+        <div class="showcase-main reveal reveal-delay-1">
+          <div class="img-wrap">
+            <picture>
+              <source srcset="images/logos/otomap_machine.webp" type="image/webp" />
+              <img src="images/optomap.jpg" alt="Optos OPTOMAP retinal imaging machine" />
+            </picture>
+          </div>
+          <div>
+            <h2>Optos OPTOMAP</h2>
+            <p>Ultra-widefield retinal imaging allowing our doctors to see 200° of your retina in a single, high-resolution capture — often without the need for dilation.</p>
+            <a href="https://www.optos.com/benefits-of-optomap/" class="showcase-learn-more">
+              Learn more
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Stacked smaller machines -->
+        <div class="showcase-stack">
+          <div class="showcase-item reveal reveal-delay-2">
+            <div class="img-wrap">
+              <img src="images/oct.jpg"
+                   srcset="images/oct.jpg 600w"
+                   sizes="(max-width: 768px) 100vw, 400px"
+                   alt="Retinal Fundus OCT machine" />
+            </div>
+            <h2>Retinal Fundus O.C.T.</h2>
+            <p>High-definition cross-sectional imaging for early disease detection.</p>
+            <a href="equipment-oct.html" class="showcase-learn-more">
+              Learn more
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+
+          <div class="showcase-item reveal reveal-delay-3">
+            <div class="img-wrap">
+              <img src="images/visual-field.jpg"
+                   srcset="images/visual-field.jpg 1024w"
+                   sizes="(max-width: 768px) 100vw, 400px"
+                   alt="Visual Fields Instrument" />
+            </div>
+            <h2>Visual Fields Instrument</h2>
+            <p>Comprehensive testing to map your peripheral vision and detect blind spots.</p>
+            <a href="equipment-retinal-camera.html" class="showcase-learn-more">
+              Learn more
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+            </a>
+          </div>
+
+          <div class="showcase-item reveal" style="transition-delay:0.4s">
+            <div class="img-wrap" style="background:#EEF2FF;">
+              <img src="images/optomap.jpg" alt="3-D Retinal Camera" />
+            </div>
+            <h2>3-D Retinal Camera</h2>
+            <p>High-definition retinal photography for detailed imaging and ongoing monitoring of your eye health.</p>
+            <a href="equipment-retinal-camera.html" class="showcase-learn-more">
+              Learn more
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Eye Exams ────────────────────────────────────────────── -->
+  <section id="eye-exams">
+    <div class="section-wrap">
+      <div class="section-header reveal">
+        <p class="section-eyebrow">Patient Care</p>
+        <h2 class="section-title">Eye exams for every stage of life.</h2>
+      </div>
+
+      <div class="cards-grid">
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="card-icon">
+            <!-- baby / infant -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="2.5"/>
+              <path d="M9 21v-6H7l2-6h6l2 6h-2v6"/>
+              <path d="M9 15h6"/>
+              <path d="M7.5 9.5C6 10.5 5 12 5 14"/>
+              <path d="M16.5 9.5C18 10.5 19 12 19 14"/>
+            </svg>
+          </div>
+          <h3>Infants &amp; Toddlers (0–5 Yrs)</h3>
+          <p>First exam recommended at 6–9 months to ensure proper eye coordination, alignment, and early development.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="card-icon">
+            <!-- school / backpack -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="8" width="12" height="13" rx="2"/>
+              <path d="M10 8V6a2 2 0 0 1 4 0v2"/>
+              <path d="M6 13h12"/>
+              <path d="M10 16h4"/>
+            </svg>
+          </div>
+          <h3>School-Aged (6–19 Yrs)</h3>
+          <p>Annual exams are crucial. 80% of learning is visual, making regular checks vital for academic success.</p>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="card-icon">
+            <!-- adult / person at desk -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="5" r="2.5"/>
+              <path d="M5 20v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/>
+              <path d="M3 20h18"/>
+            </svg>
+          </div>
+          <h3>Adults (20–64 Yrs)</h3>
+          <p>Exams every 1–2 years to update prescriptions, relieve digital eye strain, and screen for early eye diseases.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay:0.4s">
+          <div class="card-icon">
+            <!-- senior / person with cane -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="4.5" r="2.5"/>
+              <path d="M7 21l2.5-6L7 11a4 4 0 0 1 4-4h1a4 4 0 0 1 3.8 2.7L17 12"/>
+              <path d="M9.5 15l1 6"/>
+              <path d="M17 12l2 9"/>
+            </svg>
+          </div>
+          <h3>Seniors (65+ Yrs)</h3>
+          <p>Annual exams become essential to closely monitor and manage age-related conditions like cataracts and glaucoma.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">Dr. Quan <span>&amp; Associates</span></div>
+        <p class="footer-tagline">Optometrists located inside Costco across Alberta.</p>
+        <p class="footer-copy">&copy; <span id="year"></span> Dr. Quan &amp; Associates. All rights reserved.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navigate</p>
+        <div class="footer-links">
+          <a href="#equipments">Equipments</a>
+          <a href="#eye-exams">Eye Exams</a>
+          <a href="locations.html">Locations</a>
+          <a href="faq.html">FAQ</a>
+          <a href="appointments.html">Book Appointment</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contact Us</p>
+        <div class="footer-contact">
+          <a href="tel:18883812677">&#128222; 1-888-381-2677</a>
+          <a href="fax:18883100029">&#128190; Fax: 1-888-310-0029</a>
+          <a href="mailto:info@drquan.ca">&#9993; info@drquan.ca</a>
+          <a href="https://www.drquan.ca" target="_blank" rel="noopener">&#127760; www.drquan.ca</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <span class="footer-bottom-sep">&middot;</span>
+      <a href="office-policies.html">Office Policies &amp; Reprints</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
