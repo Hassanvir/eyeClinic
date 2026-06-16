@@ -96,6 +96,22 @@ document.querySelectorAll('.counter-card').forEach(card => counterObserver.obser
   }, 2800);
 })();
 
+/* ─── FAQ Accordion ───────────────────────────────────────────── */
+document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const item = trigger.closest('.accordion-item');
+    const isOpen = item.classList.contains('open');
+
+    // Close all open items
+    document.querySelectorAll('.accordion-item.open').forEach(open => {
+      open.classList.remove('open');
+    });
+
+    // Open clicked item if it was closed
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
 /* ─── Appointment form – prevent default submit (no backend) ──── */
 const apptForm = document.getElementById('apptForm');
 if (apptForm) {
