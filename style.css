@@ -81,7 +81,7 @@ body {
 nav {
   display: flex;
   align-items: center;
-  gap: 3.25rem;
+  gap: 2.5rem;
 }
 
 nav a {
