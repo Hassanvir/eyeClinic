@@ -112,18 +112,7 @@ document.querySelectorAll('.accordion-trigger').forEach(trigger => {
   });
 });
 
-/* ─── Appointment form – prevent default submit (no backend) ──── */
-const apptForm = document.getElementById('apptForm');
-if (apptForm) {
-  // Set min date on the preferred date picker to today
-  const today = new Date().toISOString().split('T')[0];
-  const datePicker = document.getElementById('preferredDate');
-  if (datePicker) datePicker.setAttribute('min', today);
-
-  // No submission behaviour needed – form data is for front desk display only.
-  // If a backend is added later, replace this handler.
-  apptForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    // Intentionally left blank – front desk manages form data directly.
-  });
-}
+/* ─── Appointment form ──────────────────────────────────────────
+   All appointments.html-specific logic (location pre-select/lock,
+   date+time picker, and submit handling) lives in appointment-location.js
+   and appointment-availability.js, loaded separately on that page only. */

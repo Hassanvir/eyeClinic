@@ -1,0 +1,247 @@
+<!--
+  HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
+
+  This whole "appointment" folder is self-contained and is being handed to
+  ITFrontDesk to host as the real booking page (replacing their current
+  form), wired into their real backend. It contains:
+    - appointments.html       (this file)
+    - appointment.css         (page-specific styles: form, calendar, etc.)
+    - appointment-location.js (location pre-select/lock — see its header)
+    - appointment-availability.js (FAKE dummy date/time data — see its header)
+  Plus it depends on the shared site-wide files ../css/reset.css and
+  ../css/style.css (colors, fonts, navbar, footer, buttons — used by every
+  page on the main site, not just this one).
+
+  Two pieces of logic here are currently placeholders for ITFrontDesk's
+  developers to confirm/replace — see the header comment in each JS file
+  for full detail:
+
+    1. appointment-location.js — pre-selects & locks the Clinic Location
+       field from a URL param (e.g. ?location=edm-ne&locked=1). This part
+       already works with no backend. It's triggered by the per-location
+       "Book Appointment" buttons on locations.html (hosted separately by
+       EasyHosting). Confirm with ITFrontDesk whether their hosted booking
+       URL can accept the same (or an equivalent) parameter.
+
+    2. appointment-availability.js — the calendar + time-slot panel below
+       currently shows FAKE dummy times. ITFrontDesk's developers need to
+       replace generateDummySlots() with a real call into their own
+       availability system.
+
+  CROSS-DOMAIN LINKS: the rest of the site (index.html, locations.html,
+  etc.) is hosted separately on EasyHosting, NOT on ITFrontDesk's domain.
+  The navbar/footer links below already use full absolute URLs
+  (https://drquan.ca/...) for that reason — keep them absolute, since
+  relative links like "index.html" would break once this page is hosted
+  at a different domain/path by ITFrontDesk.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment – Dr. Quan &amp; Associates</title>
+  <meta name="description"
+    content="Book an appointment at any Dr. Quan &amp; Associates location in Edmonton or Calgary." />
+  <link rel="icon" href="../images/fav.png" />
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="appointment.css" />
+</head>
+
+<body class="appt-page">
+
+  <!-- ─── Navbar ──────────────────────────────────────────────── -->
+  <header class="navbar scrolled" id="navbar">
+    <a href="https://drquan.ca/index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+
+    <nav class="desktop-nav">
+      <a href="https://drquan.ca/index.html#equipments">Equipments</a>
+      <a href="https://drquan.ca/index.html#eye-exams">Exams</a>
+      <a href="https://drquan.ca/locations.html">Locations</a>
+    </nav>
+
+  </header>
+
+  <!-- ─── Hero Banner ──────────────────────────────────────────── -->
+  <div class="appt-hero">
+    <h1>Book an Appointment</h1>
+    <p>Fill in the form below and our front desk team will confirm your visit.</p>
+  </div>
+
+  <!-- ─── Form ─────────────────────────────────────────────────── -->
+  <main class="appt-body">
+    <div class="appt-form-card">
+      <h2>Patient &amp; Appointment Details</h2>
+
+      <form id="apptForm" autocomplete="on">
+
+        <!-- Patient Info -->
+        <div class="form-divider">Patient Information</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(780) 000-0000" />
+          </div>
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" />
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" />
+          </div>
+        </div>
+
+        <!-- Appointment Details -->
+        <div class="form-divider">Appointment Details</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="location">Clinic Location</label>
+            <select id="location" name="location" required>
+              <option value="" disabled selected>Select a location…</option>
+              <optgroup label="Edmonton">
+                <option value="edm-ne">Edmonton North East</option>
+                <option value="edm-nw">Edmonton North West</option>
+                <option value="edm-s">Edmonton South</option>
+                <option value="edm-w">Edmonton West</option>
+                <option value="st-albert">St. Albert</option>
+              </optgroup>
+              <optgroup label="Calgary">
+                <option value="cal-ne">Calgary North East</option>
+                <option value="cal-s">Calgary South</option>
+                <option value="cal-nw">Calgary North West</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="sherwood-park">Sherwood Park</option>
+                <option value="red-deer">Red Deer</option>
+                <option value="okotoks">Okotoks</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="examType">Type of Exam</label>
+            <select id="examType" name="examType" required>
+              <option value="" disabled selected>Select exam type…</option>
+              <option value="complete">Complete Eye Exam</option>
+              <option value="pupil-dilation">Pupil Dilation</option>
+              <option value="visual-fields">Visual Fields</option>
+              <option value="follow-up">Follow Up Exam</option>
+              <option value="recheck-rx">Recheck of RX – with same doctor as before only</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-label">When would you like to come in?</div>
+        <div class="datetime-picker">
+          <div class="datetime-calendar">
+            <div class="datetime-calendar-header">
+              <button type="button" id="calPrevMonth" class="datetime-nav-btn" aria-label="Previous month">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <span id="calMonthLabel"></span>
+              <button type="button" id="calNextMonth" class="datetime-nav-btn" aria-label="Next month">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+            <div class="datetime-weekdays">
+              <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <div class="datetime-days" id="calDays"></div>
+          </div>
+
+          <div class="datetime-times" id="timePanel">
+            <p class="datetime-times-placeholder">Select a date to see available times.</p>
+          </div>
+        </div>
+        <input type="hidden" id="preferredDate" name="preferredDate" required />
+        <input type="hidden" id="preferredTime" name="preferredTime" />
+        <p class="datetime-selected-summary" id="datetimeSummary"></p>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="notes">Additional Notes</label>
+            <textarea id="notes" name="notes"
+              placeholder="Any concerns, symptoms, or previous prescription info…"></textarea>
+          </div>
+        </div>
+
+        <div class="appt-notice">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" />
+            <path stroke-linecap="round" d="M12 8v4m0 4h.01" />
+          </svg>
+          <p>Contact lens fitting, eyeglasses, or optical services require a <strong>separate appointment</strong> —
+            please contact the Optical department directly.</p>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Send Appointment Request
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- ─── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">Dr. Quan <span>&amp; Associates</span></div>
+        <p class="footer-tagline">Optometrists located inside Costco across Alberta.</p>
+        <p class="footer-copy">&copy; <span id="year"></span> Dr. Quan &amp; Associates. All rights reserved.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navigate</p>
+        <div class="footer-links">
+          <a href="https://drquan.ca/index.html#equipments">Equipments</a>
+          <a href="https://drquan.ca/index.html#eye-exams">Eye Exams</a>
+          <a href="https://drquan.ca/locations.html">Locations</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contact Us</p>
+        <div class="footer-contact">
+          <a href="tel:18883812677">1-888-381-2677</a>
+          <a href="fax:18883100029">Fax: 1-888-310-0029</a>
+          <a href="mailto:info@drquan.ca">info@drquan.ca</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="https://drquan.ca/privacy-policy.html">Privacy Policy</a>
+      <span class="footer-bottom-sep">&middot;</span>
+      <a href="https://drquan.ca/office-policies.html">Office Policies &amp; Reprints</a>
+    </div>
+  </footer>
+
+  <script src="appointment-location.js"></script>
+  <script src="appointment-availability.js"></script>
+</body>
+
+</html>
