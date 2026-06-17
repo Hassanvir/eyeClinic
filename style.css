@@ -2,7 +2,9 @@
 
 /* ─── CSS Variables ─────────────────────────────────────────── */
 :root {
-  --primary: #334c75;
+  /* --primary: #334c75; */
+  --primary: #282e66;
+  /* --primary: #3b1f3d; */
   --accent: #C9A24A;
   --light-bg: #f8f7f6;
   --card-bg: #FFFFFF;
@@ -11,6 +13,7 @@
   --border: #E5E7EB;
   --blue-600: #2563EB;
   --blue-700: #1D4ED8;
+  /* --secondary: #7a6a8a; */
 }
 
 /* ─── Anchor offset for fixed navbar ───────────────────────── */
@@ -49,7 +52,7 @@ body {
 
 .navbar.scrolled {
   top: 0;
-  background: rgba(51, 76, 117);
+  background: var(--primary);
   backdrop-filter: blur(10px);
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
 }
@@ -155,7 +158,7 @@ nav a:hover::after {
   width: 100%;
   border-radius: 0.7rem;
   overflow: hidden;
-  min-height: clamp(360px, 55vw, 62vh);
+  min-height: clamp(420px, 70vw, 78vh);
   display: flex;
   align-items: center;
   box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08);
@@ -173,10 +176,10 @@ nav a:hover::after {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg,
-      rgba(255, 253, 253, 0.521) 0%,
-      rgba(255, 255, 255, 0.47) 55%,
-      rgba(255, 255, 255, 0.742) 100%);
+  background: linear-gradient(105deg,
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.55) 45%,
+      rgba(255, 255, 255, 0.08) 100%);
   z-index: 1;
   pointer-events: none;
 }
@@ -397,7 +400,7 @@ nav a:hover::after {
 }
 
 .counter-number {
-  font-size: clamp(1.84rem, 3.5vw, 2.76rem);
+  font-size: clamp(1.84rem, 3.5vw, 1.9rem);
   font-weight: 700;
   color: var(--blue-600);
   letter-spacing: -0.02em;
@@ -1683,6 +1686,7 @@ footer {
 
   .counter-card {
     padding: 26px 14px;
+    
   }
 
   .section-wrap {
@@ -1750,6 +1754,11 @@ footer {
 
   .nav-book-btn {
     display: inline-flex;
+  }
+
+  .hero-card {
+    min-height: 52vh;
+    max-height: 52vh;
   }
 
   #counter {
