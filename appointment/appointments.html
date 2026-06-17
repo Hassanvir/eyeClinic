@@ -28,12 +28,14 @@
        replace generateDummySlots() with a real call into their own
        availability system.
 
-  CROSS-DOMAIN LINKS: the rest of the site (index.html, locations.html,
-  etc.) is hosted separately on EasyHosting, NOT on ITFrontDesk's domain.
-  The navbar/footer links below already use full absolute URLs
-  (https://drquan.ca/...) for that reason — keep them absolute, since
-  relative links like "index.html" would break once this page is hosted
-  at a different domain/path by ITFrontDesk.
+  LINKS BACK TO THE MAIN SITE: the navbar/footer links below currently use
+  relative paths (e.g. "../index.html") on the assumption that this page
+  stays on the same domain/folder structure as the main site (e.g. served
+  at drquan.ca/appointment/appointments.html), rather than being hosted on
+  a separate ITFrontDesk domain. If that changes and this page does end up
+  hosted separately by ITFrontDesk after all, these links will need to
+  become full absolute URLs (e.g. "https://drquan.ca/index.html") instead,
+  or they will 404 on ITFrontDesk's server.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -54,12 +56,12 @@
 
   <!-- ─── Navbar ──────────────────────────────────────────────── -->
   <header class="navbar scrolled" id="navbar">
-    <a href="https://drquan.ca/index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+    <a href="../index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
 
     <nav class="desktop-nav">
-      <a href="https://drquan.ca/index.html#equipments">Equipments</a>
-      <a href="https://drquan.ca/index.html#eye-exams">Exams</a>
-      <a href="https://drquan.ca/locations.html">Locations</a>
+      <a href="../index.html#equipments">Equipments</a>
+      <a href="../index.html#eye-exams">Exams</a>
+      <a href="../locations.html">Locations</a>
     </nav>
 
   </header>
@@ -219,9 +221,9 @@
       <div class="footer-col">
         <p class="footer-col-title">Navigate</p>
         <div class="footer-links">
-          <a href="https://drquan.ca/index.html#equipments">Equipments</a>
-          <a href="https://drquan.ca/index.html#eye-exams">Eye Exams</a>
-          <a href="https://drquan.ca/locations.html">Locations</a>
+          <a href="../index.html#equipments">Equipments</a>
+          <a href="../index.html#eye-exams">Eye Exams</a>
+          <a href="../locations.html">Locations</a>
         </div>
       </div>
       <div class="footer-col">
@@ -234,9 +236,9 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <a href="https://drquan.ca/privacy-policy.html">Privacy Policy</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
       <span class="footer-bottom-sep">&middot;</span>
-      <a href="https://drquan.ca/office-policies.html">Office Policies &amp; Reprints</a>
+      <a href="../office-policies.html">Office Policies &amp; Reprints</a>
     </div>
   </footer>
 
