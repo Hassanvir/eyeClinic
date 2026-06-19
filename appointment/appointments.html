@@ -99,28 +99,49 @@
 
         <div class="form-row">
           <div class="form-group">
+            <label for="city">City</label>
+            <select id="city" name="city" required>
+              <option value="" disabled selected>Select a city…</option>
+              <option value="edmonton">Edmonton</option>
+              <option value="calgary">Calgary</option>
+              <option value="st-albert">St. Albert</option>
+              <option value="sherwood-park">Sherwood Park</option>
+              <option value="red-deer">Red Deer</option>
+              <option value="okotoks">Okotoks</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="location">Location</label>
-            <select id="location" name="location" required>
-              <option value="" disabled selected>Select a location…</option>
-              <optgroup label="Edmonton">
-                <option value="edm-ne">Edmonton North East</option>
-                <option value="edm-nw">Edmonton North West</option>
-                <option value="edm-s">Edmonton South</option>
-                <option value="edm-w">Edmonton West</option>
+            <select id="location" name="location" required disabled>
+              <option id="locationPlaceholder" value="" disabled selected>Select a city first…</option>
+              <optgroup label="Edmonton" data-city="edmonton">
+                <option value="edm-ne">North East</option>
+                <option value="edm-nw">North West</option>
+                <option value="edm-s">South</option>
+                <option value="edm-w">West</option>
+              </optgroup>
+              <optgroup label="Calgary" data-city="calgary">
+                <option value="cal-ne">North East</option>
+                <option value="cal-s">South</option>
+                <option value="cal-nw">North West</option>
+              </optgroup>
+              <optgroup label="St. Albert" data-city="st-albert">
                 <option value="st-albert">St. Albert</option>
               </optgroup>
-              <optgroup label="Calgary">
-                <option value="cal-ne">Calgary North East</option>
-                <option value="cal-s">Calgary South</option>
-                <option value="cal-nw">Calgary North West</option>
-              </optgroup>
-              <optgroup label="Other">
+              <optgroup label="Sherwood Park" data-city="sherwood-park">
                 <option value="sherwood-park">Sherwood Park</option>
+              </optgroup>
+              <optgroup label="Red Deer" data-city="red-deer">
                 <option value="red-deer">Red Deer</option>
+              </optgroup>
+              <optgroup label="Okotoks" data-city="okotoks">
                 <option value="okotoks">Okotoks</option>
               </optgroup>
             </select>
           </div>
+        </div>
+
+        <div class="form-row single">
           <div class="form-group">
             <label for="doctor">Doctor</label>
             <select id="doctor" name="doctor">

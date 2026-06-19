@@ -39,31 +39,64 @@ const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 
-/* ─── 2. Location pre-select/lock (step 1) ───────────────────────
-   How it's triggered: on the Locations page, each clinic's
-   "Book Appointment" button links here as:
+/* ─── 2. City → Location filtering, plus pre-select/lock (step 1) ──
+   The City field filters which optgroup of the Location dropdown is
+   shown (Edmonton / Calgary / Other), built from each option's parent
+   optgroup data-city attribute — no separate data source to maintain.
+
+   How pre-select/lock is triggered: on the Locations page, each
+   clinic's "Book Appointment" button links here as:
      appointments.html?location=edm-ne&locked=1
-   When step 1 loads with that query string, the matching location
-   is selected and the dropdown is disabled (locked), with a
-   "Change location" link to unlock it if needed. */
+   When step 1 loads with that query string, the matching city is
+   derived from the location's optgroup and both City and Location
+   are selected and disabled (locked), with a "Change location" link
+   to unlock them if needed. */
 const apptStep1FormForLocation = document.getElementById('apptStep1Form');
 
 if (apptStep1FormForLocation) {
+  const citySelect = document.getElementById('city');
+  const locationSelect = document.getElementById('location');
+  const locationPlaceholder = document.getElementById('locationPlaceholder');
+  const allLocationOptgroups = Array.from(locationSelect.querySelectorAll('optgroup'));
+
+  function filterLocationsByCity(cityValue) {
+    allLocationOptgroups.forEach(group => {
+      group.hidden = group.dataset.city !== cityValue;
+    });
+    locationSelect.value = '';
+    locationSelect.disabled = !cityValue;
+    locationPlaceholder.textContent = cityValue ? 'Select a location…' : 'Select a city first…';
+  }
+
+  citySelect.addEventListener('change', () => {
+    filterLocationsByCity(citySelect.value);
+  });
+
   const locationParams = new URLSearchParams(window.location.search);
   const presetLocation = locationParams.get('location');
-  const locationSelect = document.getElementById('location');
 
-  if (presetLocation && locationSelect) {
+  if (presetLocation) {
     const matchedOption = Array.from(locationSelect.options)
       .find(opt => opt.value === presetLocation);
 
     if (matchedOption) {
+      const presetCity = matchedOption.closest('optgroup').dataset.city;
+      citySelect.value = presetCity;
+      filterLocationsByCity(presetCity);
       locationSelect.value = presetLocation;
+      locationSelect.disabled = false;
 
       if (locationParams.get('locked') === '1') {
+        citySelect.disabled = true;
         locationSelect.disabled = true;
 
-        // Disabled selects don't submit their value, so mirror it into a hidden input
+        // Disabled selects don't submit their value, so mirror them into hidden inputs
+        const hiddenCity = document.createElement('input');
+        hiddenCity.type = 'hidden';
+        hiddenCity.name = 'city';
+        hiddenCity.value = presetCity;
+        apptStep1FormForLocation.appendChild(hiddenCity);
+
         const hiddenLocation = document.createElement('input');
         hiddenLocation.type = 'hidden';
         hiddenLocation.name = 'location';
@@ -75,7 +108,9 @@ if (apptStep1FormForLocation) {
         changeLink.className = 'location-change-link';
         changeLink.textContent = 'Change location';
         changeLink.addEventListener('click', () => {
+          citySelect.disabled = false;
           locationSelect.disabled = false;
+          hiddenCity.remove();
           hiddenLocation.remove();
           changeLink.remove();
         });
@@ -271,17 +306,19 @@ if (apptStep1Form) {
   apptStep1Form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    const citySelect = document.getElementById('city');
     const locationSelect = document.getElementById('location');
     const doctorSelect = document.getElementById('doctor');
     const examSelect = document.getElementById('examType');
     const notesInput = document.getElementById('notes');
 
-    if (!locationSelect.value || !examSelect.value || !dateInput.value || !timeInput.value) {
-      alert('Please select a location, exam type, and an available date & time before continuing.');
+    if (!citySelect.value || !locationSelect.value || !examSelect.value || !dateInput.value || !timeInput.value) {
+      alert('Please select a city, location, exam type, and an available date & time before continuing.');
       return;
     }
 
     const params = new URLSearchParams({
+      city: citySelect.value,
       location: locationSelect.value,
       doctor: doctorSelect.value,
       examType: examSelect.value,
@@ -338,6 +375,7 @@ const summaryEl = document.getElementById('apptSummary');
 
 if (apptStep2Form && summaryEl) {
   const params = new URLSearchParams(window.location.search);
+  const city = params.get('city') || '';
   const location = params.get('location');
   const doctor = params.get('doctor');
   const examType = params.get('examType');
@@ -364,6 +402,7 @@ if (apptStep2Form && summaryEl) {
     // Carry step 1 selections forward as hidden inputs so the final
     // submission contains the complete booking, not just step 2's fields.
     [
+      ['city', city],
       ['location', location],
       ['doctor', doctor],
       ['examType', examType],

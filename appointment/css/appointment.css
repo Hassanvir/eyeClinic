@@ -43,10 +43,18 @@
   z-index: 0;
 }
 
+.exist {
+  /* object-fit: contain; */
+  /* width: fit-content; */
+  height: 110vh;
+
+
+}
+
 .appt-form-card {
   position: relative;
   background: #fff;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   border: 1px solid var(--border);
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
   padding: 48px 48px;
@@ -66,7 +74,7 @@
   background: #fff;
   border: 1px solid var(--border);
   border-left: 4px solid var(--accent);
-  border-radius: 1rem;
+  border-radius: 1.25rem;
   padding: 1.5rem 1.75rem;
   margin-bottom: 28px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
@@ -105,7 +113,7 @@
 .appt-summary {
   background: var(--light-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 1.25rem;
   padding: 16px 20px;
   margin-bottom: 8px;
 }
@@ -132,7 +140,7 @@
   text-align: right;
 }
 
-.appt-summary + .location-change-link {
+.appt-summary+.location-change-link {
   display: inline-block;
   margin-bottom: 24px;
 }
@@ -144,7 +152,7 @@
   gap: 16px;
   background: var(--light-bg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 1.25rem;
   padding: 16px 20px;
   margin-bottom: 24px;
 }
@@ -206,7 +214,7 @@
 .appt-confirmation-card {
   position: relative;
   background: #fff;
-  border-radius: 1.5rem;
+  border-radius: 1.25rem;
   border: 1px solid var(--border);
   border-left: 6px solid var(--accent);
   box-shadow: 0 2px 24px rgba(0, 0, 0, 0.06);
@@ -259,7 +267,7 @@
 
 .appt-confirmation-table {
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 1.25rem;
   overflow: hidden;
   margin-bottom: 24px;
 }
@@ -288,7 +296,7 @@
 
 .appt-checklist {
   background: var(--light-bg);
-  border-radius: 14px;
+  border-radius: 1.25rem;
   padding: 20px 24px;
   margin-bottom: 28px;
 }
@@ -306,7 +314,7 @@
   line-height: 1.7;
 }
 
-.appt-checklist p + p {
+.appt-checklist p+p {
   margin-top: 10px;
 }
 
@@ -318,7 +326,7 @@
   gap: 12px;
   background: #fff;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 1.25rem;
   padding: 16px 18px 16px 26px;
   margin-bottom: 20px;
   overflow: hidden;
