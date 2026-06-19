@@ -1,0 +1,130 @@
+<!--
+  HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
+
+  This is the final confirmation page, shown after a patient submits the
+  step 2 form on appointment-details.html. It reads everything collected
+  across both steps (location, doctor, exam, date/time, notes, and patient
+  info) from URL query params and displays it as a read-only confirmation,
+  matching the layout of your existing confirmAppt.html page.
+
+  PLACEHOLDER: the "Confirmation #" shown below is a random placeholder
+  generated client-side (see js/appointment.js, section 6) — there is no
+  backend here, so nothing is actually booked yet. Once a real booking API
+  exists, this page should instead receive a real confirmation number (and
+  ideally the appointment ID) back from that API after a successful submit
+  on appointment-details.html, rather than generating one locally.
+
+  Shares css/appointment.css with the rest of the booking flow.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Confirmed – Dr. Quan &amp; Associates</title>
+  <meta name="description"
+    content="Your appointment with Dr. Quan &amp; Associates has been confirmed." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/appointment.css" />
+</head>
+
+<body class="appt-page">
+
+  <!-- ─── Navbar ──────────────────────────────────────────────── -->
+  <header class="navbar scrolled" id="navbar">
+    <a href="../index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+
+    <nav class="desktop-nav">
+      <a href="../index.html#equipments">Equipments</a>
+      <a href="../index.html#eye-exams">Exams</a>
+      <a href="../locations.html">Locations</a>
+    </nav>
+
+  </header>
+
+  <!-- ─── Hero Banner ──────────────────────────────────────────── -->
+  <div class="appt-hero">
+    <h1>Appointment Confirmed</h1>
+    <p>Thank you — here are your appointment details.</p>
+  </div>
+
+  <!-- ─── Confirmation ─────────────────────────────────────────── -->
+  <main class="appt-body">
+    <div class="appt-confirmation-card">
+      <div class="appt-confirmation-header">
+        <h2>
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Confirmation
+        </h2>
+        <button type="button" class="appt-print-btn" onclick="window.print()">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2m-12 0h12v4H6v-4z" />
+          </svg>
+          Print
+        </button>
+      </div>
+
+      <div class="appt-date-badge" id="confirmationDateBadge"></div>
+
+      <div class="appt-confirmation-table" id="confirmationTable"></div>
+
+      <div class="appt-checklist">
+        <p class="appt-checklist-title">Before You Come In</p>
+        <p>Please avoid wearing contacts and bring your glasses. <strong>Please bring your Alberta health care card
+            with you.</strong> Also, please note that our doctors only accept debit, Mastercard, or cash.</p>
+        <p>If you need contact lens fitting and services, please contact the Optical department directly for
+          another separate appointment.</p>
+      </div>
+
+      <div class="appt-confirmation-actions">
+        <a href="appointments.html" class="submit-btn appt-confirmation-back">Book Another Appointment</a>
+        <a href="../index.html" class="appt-confirmation-close appt-confirmation-back">Close</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- ─── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">Dr. Quan <span>&amp; Associates</span></div>
+        <p class="footer-tagline">Optometrists located inside Costco across Alberta.</p>
+        <p class="footer-copy">&copy; <span id="year"></span> Dr. Quan &amp; Associates. All rights reserved.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navigate</p>
+        <div class="footer-links">
+          <a href="../index.html#equipments">Equipments</a>
+          <a href="../index.html#eye-exams">Eye Exams</a>
+          <a href="../locations.html">Locations</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contact Us</p>
+        <div class="footer-contact">
+          <a href="tel:18883812677">1-888-381-2677</a>
+          <a href="fax:18883100029">Fax: 1-888-310-0029</a>
+          <a href="mailto:info@drquan.ca">info@drquan.ca</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <span class="footer-bottom-sep">&middot;</span>
+      <a href="../office-policies.html">Office Policies &amp; Reprints</a>
+    </div>
+  </footer>
+
+  <script src="js/appointment.js"></script>
+</body>
+
+</html>

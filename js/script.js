@@ -112,7 +112,8 @@ document.querySelectorAll('.accordion-trigger').forEach(trigger => {
   });
 });
 
-/* ─── Appointment form ──────────────────────────────────────────
-   All appointments.html-specific logic (location pre-select/lock,
-   date+time picker, and submit handling) lives in appointment-location.js
-   and appointment-availability.js, loaded separately on that page only. */
+/* ─── Appointment booking flow ──────────────────────────────────
+   All appointment-page logic (location pre-select/lock, date+time
+   picker, step navigation, and submit handling) lives in the
+   self-contained appointment/ folder: appointment/js/appointment.js
+   and appointment/css/appointment.css — not loaded on any other page. */

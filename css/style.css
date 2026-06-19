@@ -27,7 +27,7 @@
 }
 
 body {
-  font-family: "Mona Sans", sans-serif;
+  font-family: "Inter", sans-serif;
   background: var(--light-bg);
   color: var(--text-dark);
 }

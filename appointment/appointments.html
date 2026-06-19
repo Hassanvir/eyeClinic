@@ -1,32 +1,38 @@
 <!--
   HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
 
-  This whole "appointment" folder is self-contained and is being handed to
-  ITFrontDesk to host as the real booking page (replacing their current
-  form), wired into their real backend. It contains:
-    - appointments.html       (this file)
-    - appointment.css         (page-specific styles: form, calendar, etc.)
-    - appointment-location.js (location pre-select/lock — see its header)
-    - appointment-availability.js (FAKE dummy date/time data — see its header)
-  Plus it depends on the shared site-wide files ../css/reset.css and
-  ../css/style.css (colors, fonts, navbar, footer, buttons — used by every
-  page on the main site, not just this one).
+  This is step 1 of a 2-page booking flow being handed to ITFrontDesk to
+  host as the real booking flow (replacing their current forms), wired
+  into their real backend. The flow matches the structure of ITFrontDesk's
+  existing tool:
 
-  Two pieces of logic here are currently placeholders for ITFrontDesk's
-  developers to confirm/replace — see the header comment in each JS file
-  for full detail:
+    1. appointments.html (this file) — pick location, doctor, exam type,
+       and date/time. Selections are passed to step 2 via URL query
+       params when "Continue" is clicked (see js/appointment.js).
+    2. appointment-details.html — patient info fields + final submit.
 
-    1. appointment-location.js — pre-selects & locks the Clinic Location
-       field from a URL param (e.g. ?location=edm-ne&locked=1). This part
-       already works with no backend. It's triggered by the per-location
-       "Book Appointment" buttons on locations.html (hosted separately by
-       EasyHosting). Confirm with ITFrontDesk whether their hosted booking
-       URL can accept the same (or an equivalent) parameter.
+  This "appointment" folder is self-contained: both pages share one
+  script, js/appointment.js, and one stylesheet, css/appointment.css —
+  each organized in clearly labeled sections so it's easy to find what's
+  relevant to each page. They also depend on the shared site-wide files
+  ../css/reset.css and ../css/style.css (colors, fonts, navbar, footer,
+  buttons — used by every page on the main site, not just this one).
 
-    2. appointment-availability.js — the calendar + time-slot panel below
-       currently shows FAKE dummy times. ITFrontDesk's developers need to
-       replace generateDummySlots() with a real call into their own
-       availability system.
+  PLACEHOLDER LOGIC for ITFrontDesk's developers to confirm/replace —
+  see the section comments inside js/appointment.js for full detail:
+    1. Section 2 (location pre-select/lock) — pre-selects & locks the
+       Location field from a URL param (e.g. ?location=edm-ne&locked=1).
+       This part already works with no backend. It's triggered by the
+       per-location "Book Appointment" buttons on locations.html.
+       Confirm with ITFrontDesk whether their hosted booking URL can
+       accept the same (or an equivalent) parameter.
+    2. Section 3 (date + time availability) — the calendar + time-slot
+       panel below currently shows FAKE dummy times. Replace
+       generateDummySlots() with a real call into your availability
+       system.
+    3. The "Doctor" dropdown below uses generic placeholder names (Doctor 1,
+       Doctor 2, etc.) since this site has no real per-doctor roster data.
+       Replace with the real doctor list (likely per-location) when known.
 
   LINKS BACK TO THE MAIN SITE: the navbar/footer links below currently use
   relative paths (e.g. "../index.html") on the assumption that this page
@@ -47,9 +53,13 @@
   <meta name="description"
     content="Book an appointment at any Dr. Quan &amp; Associates location in Edmonton or Calgary." />
   <link rel="icon" href="../images/fav.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/reset.css" />
   <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="appointment.css" />
+  <link rel="stylesheet" href="css/appointment.css" />
 </head>
 
 <body class="appt-page">
@@ -69,54 +79,25 @@
   <!-- ─── Hero Banner ──────────────────────────────────────────── -->
   <div class="appt-hero">
     <h1>Book an Appointment</h1>
-    <p>Fill in the form below and our front desk team will confirm your visit.</p>
   </div>
 
   <!-- ─── Form ─────────────────────────────────────────────────── -->
   <main class="appt-body">
+
+    <div class="appt-existing-notice">
+      <p>Already have an appointment booked with us? Click below to view your appointment details or cancel an
+        upcoming visit.</p>
+      <a href="existing-appointments.html" class="appt-existing-link">View or Cancel Existing Appointment</a>
+    </div>
+
     <div class="appt-form-card">
-      <h2>Patient &amp; Appointment Details</h2>
+      <h2>Book Appointment Now</h2>
 
-      <form id="apptForm" autocomplete="on">
-
-        <!-- Patient Info -->
-        <div class="form-divider">Patient Information</div>
+      <form id="apptStep1Form" autocomplete="on">
 
         <div class="form-row">
           <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
-          </div>
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" placeholder="(780) 000-0000" />
-          </div>
-          <div class="form-group">
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" />
-          </div>
-        </div>
-
-        <div class="form-row single">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="jane@example.com" />
-          </div>
-        </div>
-
-        <!-- Appointment Details -->
-        <div class="form-divider">Appointment Details</div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="location">Clinic Location</label>
+            <label for="location">Location</label>
             <select id="location" name="location" required>
               <option value="" disabled selected>Select a location…</option>
               <optgroup label="Edmonton">
@@ -139,7 +120,20 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="examType">Type of Exam</label>
+            <label for="doctor">Doctor</label>
+            <select id="doctor" name="doctor">
+              <option value="any" selected>Any Doctor</option>
+              <option value="doctor-1">Doctor 1</option>
+              <option value="doctor-2">Doctor 2</option>
+              <option value="doctor-3">Doctor 3</option>
+              <option value="doctor-4">Doctor 4</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="examType">Exam</label>
             <select id="examType" name="examType" required>
               <option value="" disabled selected>Select exam type…</option>
               <option value="complete">Complete Eye Exam</option>
@@ -171,6 +165,10 @@
               <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
             </div>
             <div class="datetime-days" id="calDays"></div>
+            <div class="datetime-legend">
+              <span class="datetime-legend-item"><span class="datetime-legend-dot available"></span>Available</span>
+              <span class="datetime-legend-item"><span class="datetime-legend-dot unavailable"></span>Unavailable</span>
+            </div>
           </div>
 
           <div class="datetime-times" id="timePanel">
@@ -183,27 +181,30 @@
 
         <div class="form-row single">
           <div class="form-group">
-            <label for="notes">Additional Notes</label>
+            <label for="notes">Comments</label>
             <textarea id="notes" name="notes"
               placeholder="Any concerns, symptoms, or previous prescription info…"></textarea>
           </div>
         </div>
 
-        <div class="appt-notice">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" />
-            <path stroke-linecap="round" d="M12 8v4m0 4h.01" />
-          </svg>
-          <p>Contact lens fitting, eyeglasses, or optical services require a <strong>separate appointment</strong> —
+        <div class="appt-checklist">
+          <p>Contact lens fitting, eyeglasses, or optical services require a <strong>separate appointment</strong>
             please contact the Optical department directly.</p>
         </div>
 
-        <button type="submit" class="submit-btn">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <div class="appt-family-notice">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m5-2.26a4 4 0 100-5.74 4 4 0 000 5.74zM17.5 9.5a3.5 3.5 0 10-3-5.74M6.5 9.5a3.5 3.5 0 113-5.74" />
           </svg>
-          Send Appointment Request
+          <p>Booking for your family? Please book an <strong>individual appointment</strong> for each family member.</p>
+        </div>
+
+        <button type="submit" class="submit-btn" id="continueBtn">
+          Continue
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
         </button>
 
       </form>
@@ -242,8 +243,7 @@
     </div>
   </footer>
 
-  <script src="appointment-location.js"></script>
-  <script src="appointment-availability.js"></script>
+  <script src="js/appointment.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,152 @@
+<!--
+  HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
+
+  This is step 2 of 2 in the booking flow (see appointments.html for the
+  full handoff notes and folder overview). This page receives the step 1
+  selections (location, doctor, exam type, date, time, notes) as URL query
+  params, displays them as a read-only summary, collects patient info, and
+  submits everything together.
+
+  Shares js/appointment.js and css/appointment.css with step 1 — see the
+  section comments inside js/appointment.js (sections 1 and 5 apply to
+  this page specifically).
+
+  TO GO LIVE: replace the submit handler in js/appointment.js (section 5)
+  with real submission logic (e.g. POST all fields — both the step 1
+  params and the patient info below — to your booking API).
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment – Dr. Quan &amp; Associates</title>
+  <meta name="description"
+    content="Book an appointment at any Dr. Quan &amp; Associates location in Edmonton or Calgary." />
+  <link rel="icon" href="../images/fav.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/appointment.css" />
+</head>
+
+<body class="appt-page">
+
+  <!-- ─── Navbar ──────────────────────────────────────────────── -->
+  <header class="navbar scrolled" id="navbar">
+    <a href="../index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+
+    <nav class="desktop-nav">
+      <a href="../index.html#equipments">Equipments</a>
+      <a href="../index.html#eye-exams">Exams</a>
+      <a href="../locations.html">Locations</a>
+    </nav>
+
+  </header>
+
+  <!-- ─── Hero Banner ──────────────────────────────────────────── -->
+  <div class="appt-hero">
+    <h1>Book an Appointment</h1>
+    <p>Step 2 of 2 — confirm your visit details and enter your information.</p>
+  </div>
+
+  <!-- ─── Form ─────────────────────────────────────────────────── -->
+  <main class="appt-body">
+
+    <div class="appt-existing-notice">
+      <p>Already have an appointment booked with us? Click below to view your appointment details or cancel an
+        upcoming visit.</p>
+      <a href="existing-appointments.html" class="appt-existing-link">View or Cancel Existing Appointment</a>
+    </div>
+
+    <div class="appt-form-card">
+      <h2>Patient Details</h2>
+
+      <div class="appt-summary" id="apptSummary"></div>
+      <a href="appointments.html" class="location-change-link">Edit appointment details</a>
+
+      <form id="apptStep2Form" autocomplete="on">
+
+        <div class="form-divider">Patient Information</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" required />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="(780) 000-0000" required />
+          </div>
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required />
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Send Appointment Request
+        </button>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- ─── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">Dr. Quan <span>&amp; Associates</span></div>
+        <p class="footer-tagline">Optometrists located inside Costco across Alberta.</p>
+        <p class="footer-copy">&copy; <span id="year"></span> Dr. Quan &amp; Associates. All rights reserved.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navigate</p>
+        <div class="footer-links">
+          <a href="../index.html#equipments">Equipments</a>
+          <a href="../index.html#eye-exams">Eye Exams</a>
+          <a href="../locations.html">Locations</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contact Us</p>
+        <div class="footer-contact">
+          <a href="tel:18883812677">1-888-381-2677</a>
+          <a href="fax:18883100029">Fax: 1-888-310-0029</a>
+          <a href="mailto:info@drquan.ca">info@drquan.ca</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <span class="footer-bottom-sep">&middot;</span>
+      <a href="../office-policies.html">Office Policies &amp; Reprints</a>
+    </div>
+  </footer>
+
+  <script src="js/appointment.js"></script>
+</body>
+
+</html>

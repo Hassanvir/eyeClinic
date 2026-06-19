@@ -1,0 +1,122 @@
+<!--
+  HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
+
+  This page is linked from the "View or Cancel Existing Appointment"
+  button on both appointments.html and appointment-details.html. It lets
+  a patient look up a previously booked appointment by phone/email + date
+  of birth, see its details, and cancel it.
+
+  PLACEHOLDER: there is no backend here, so the lookup form below does not
+  actually search anything yet. ITFrontDesk's developers need to replace
+  the submit handler in js/existing-appointments.js with a real lookup
+  against their booking system, then render the matching appointment(s)
+  and wire up a real cancel action.
+
+  Shares css/appointment.css with the booking flow for visual consistency.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>View or Cancel Existing Appointment – Dr. Quan &amp; Associates</title>
+  <meta name="description"
+    content="Look up an existing appointment at Dr. Quan &amp; Associates to view its details or cancel it." />
+  <link rel="icon" href="../images/fav.png" />
+  <link rel="stylesheet" href="../css/reset.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="css/appointment.css" />
+</head>
+
+<body class="appt-page">
+
+  <!-- ─── Navbar ──────────────────────────────────────────────── -->
+  <header class="navbar scrolled" id="navbar">
+    <a href="../index.html" class="logo">Dr. Quan <span>&amp; Associates</span></a>
+
+    <nav class="desktop-nav">
+      <a href="../index.html#equipments">Equipments</a>
+      <a href="../index.html#eye-exams">Exams</a>
+      <a href="../locations.html">Locations</a>
+    </nav>
+
+  </header>
+
+  <!-- ─── Hero Banner ──────────────────────────────────────────── -->
+  <div class="appt-hero">
+    <h1>View or Cancel Existing Appointment</h1>
+    <p>Look up your appointment using the information you provided when booking.</p>
+  </div>
+
+  <!-- ─── Form ─────────────────────────────────────────────────── -->
+  <main class="appt-body">
+    <div class="appt-form-card">
+      <h2>Find Your Appointment</h2>
+
+      <form id="lookupForm" autocomplete="on">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lookupPhone">Phone Number</label>
+            <input type="tel" id="lookupPhone" name="lookupPhone" placeholder="(780) 000-0000" required />
+          </div>
+          <div class="form-group">
+            <label for="lookupDob">Date of Birth</label>
+            <input type="date" id="lookupDob" name="lookupDob" required />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7" />
+            <path stroke-linecap="round" d="M21 21l-4.35-4.35" />
+          </svg>
+          Find My Appointment
+        </button>
+
+        <p class="appt-lookup-note">Can't find your appointment, or need help right away? Call us at
+          <a href="tel:18883812677" class="link-primary">1-888-381-2677</a>.</p>
+
+      </form>
+
+      <div class="appt-lookup-result" id="lookupResult" hidden></div>
+    </div>
+  </main>
+
+  <!-- ─── Footer ──────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="footer-logo">Dr. Quan <span>&amp; Associates</span></div>
+        <p class="footer-tagline">Optometrists located inside Costco across Alberta.</p>
+        <p class="footer-copy">&copy; <span id="year"></span> Dr. Quan &amp; Associates. All rights reserved.</p>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Navigate</p>
+        <div class="footer-links">
+          <a href="../index.html#equipments">Equipments</a>
+          <a href="../index.html#eye-exams">Eye Exams</a>
+          <a href="../locations.html">Locations</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contact Us</p>
+        <div class="footer-contact">
+          <a href="tel:18883812677">1-888-381-2677</a>
+          <a href="fax:18883100029">Fax: 1-888-310-0029</a>
+          <a href="mailto:info@drquan.ca">info@drquan.ca</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <span class="footer-bottom-sep">&middot;</span>
+      <a href="../office-policies.html">Office Policies &amp; Reprints</a>
+    </div>
+  </footer>
+
+  <script src="js/existing-appointments.js"></script>
+</body>
+
+</html>
