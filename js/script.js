@@ -112,6 +112,89 @@ document.querySelectorAll('.accordion-trigger').forEach(trigger => {
   });
 });
 
+/* ─── Eye FAQ floating widget (homepage only) ────────────────────
+   Clicking the floating person icon hides the icon and reveals the
+   list of eye FAQ topics. Clicking the icon again, clicking outside
+   the panel, or pressing Escape closes the panel and brings the icon
+   back. Each topic link opens its own minimal page. */
+const eyeFaqToggle = document.getElementById('eyeFaqToggle');
+const eyeFaqPanel = document.getElementById('eyeFaqPanel');
+
+if (eyeFaqToggle && eyeFaqPanel) {
+  const openPanel = () => {
+    eyeFaqToggle.classList.add('is-hidden');
+    eyeFaqToggle.setAttribute('aria-expanded', 'true');
+    eyeFaqPanel.hidden = false;
+    eyeFaqPanel.classList.remove('is-closing');
+  };
+
+  const closePanel = () => {
+    eyeFaqToggle.classList.remove('is-hidden');
+    eyeFaqToggle.setAttribute('aria-expanded', 'false');
+    eyeFaqPanel.classList.add('is-closing');
+    setTimeout(() => {
+      eyeFaqPanel.hidden = true;
+      eyeFaqPanel.classList.remove('is-closing');
+    }, 220);
+  };
+
+  eyeFaqToggle.addEventListener('click', openPanel);
+
+  document.addEventListener('click', (e) => {
+    if (eyeFaqPanel.hidden) return;
+    if (!eyeFaqPanel.contains(e.target) && !eyeFaqToggle.contains(e.target)) {
+      closePanel();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !eyeFaqPanel.hidden) closePanel();
+  });
+}
+
+/* ─── Eye FAQ navbar dropdown (medium/large screens) ─────────────
+   Same 5 topic links as the mobile floating widget above, but shown
+   as a dropdown under the "Eye FAQ" navbar link instead — the
+   floating widget is hidden at this breakpoint via CSS. */
+const navEyeFaqToggle = document.getElementById('navEyeFaqToggle');
+const navEyeFaqPanel = document.getElementById('navEyeFaqPanel');
+
+if (navEyeFaqToggle && navEyeFaqPanel) {
+  const openNavPanel = () => {
+    navEyeFaqToggle.setAttribute('aria-expanded', 'true');
+    navEyeFaqPanel.hidden = false;
+    navEyeFaqPanel.classList.remove('is-closing');
+  };
+
+  const closeNavPanel = () => {
+    navEyeFaqToggle.setAttribute('aria-expanded', 'false');
+    navEyeFaqPanel.classList.add('is-closing');
+    setTimeout(() => {
+      navEyeFaqPanel.hidden = true;
+      navEyeFaqPanel.classList.remove('is-closing');
+    }, 220);
+  };
+
+  navEyeFaqToggle.addEventListener('click', () => {
+    if (navEyeFaqPanel.hidden) {
+      openNavPanel();
+    } else {
+      closeNavPanel();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (navEyeFaqPanel.hidden) return;
+    if (!navEyeFaqPanel.contains(e.target) && !navEyeFaqToggle.contains(e.target)) {
+      closeNavPanel();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !navEyeFaqPanel.hidden) closeNavPanel();
+  });
+}
+
 /* ─── Appointment booking flow ──────────────────────────────────
    All appointment-page logic (location pre-select/lock, date+time
    picker, step navigation, and submit handling) lives in the
