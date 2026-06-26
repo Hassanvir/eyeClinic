@@ -1373,6 +1373,7 @@ footer {
 
 /* ─── FAQ Accordion ─────────────────────────────────────────── */
 #faq {
+  position: relative;
   background: var(--light-bg);
 }
 
@@ -1680,11 +1681,16 @@ footer {
   }
 }
 
-/* ─── Eye FAQ Floating Widget (mobile only) ───────────────────── */
+/* ─── Eye FAQ Floating Widget (mobile only) ───────────────────────
+   position: sticky against the viewport's bottom edge, but only
+   while #faq is in view — it tracks the scroll like a fixed button
+   as the user scrolls through that section, then scrolls away
+   normally once they pass the section's top or bottom edge. */
 .eye-faq-widget {
-  position: fixed;
+  position: sticky;
   bottom: 24px;
-  right: 24px;
+  margin-left: auto;
+  width: fit-content;
   z-index: 60;
   display: flex;
   flex-direction: column;
