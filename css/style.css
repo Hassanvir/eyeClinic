@@ -1709,7 +1709,7 @@ footer {
   height: 56px;
   border-radius: 50%;
   border: none;
-  background: #fff;
+  background: var(--primary);
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
   display: flex;
   align-items: center;
@@ -1741,11 +1741,11 @@ footer {
 
   0%,
   100% {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(51, 76, 117, 0.35);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(201, 162, 74, 0.45);
   }
 
   50% {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 8px rgba(51, 76, 117, 0);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 8px rgba(201, 162, 74, 0);
   }
 }
 
@@ -1926,4 +1926,49 @@ footer {
 
 .nav-eye-faq-panel a:hover {
   color: var(--primary);
+}
+
+/* ─── Eye Exam Page (page-scoped list overrides) ──────────────── */
+.eye-exam-list {
+  display: block;
+}
+
+.eye-exam-list li {
+  display: block;
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 0.85rem;
+}
+
+.eye-exam-list li:last-child {
+  margin-bottom: 0;
+}
+
+.eye-exam-list li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  top: -0.4em;
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.eye-exam-list > li > strong {
+  color: var(--text-dark);
+}
+
+.eye-exam-sublist {
+  margin-top: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.eye-exam-gold-box {
+  background: #fff;
+  border-left: 4px solid var(--accent);
+  border-radius: 0.6rem;
+  padding: 16px 20px;
 }

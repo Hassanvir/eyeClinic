@@ -6,27 +6,27 @@
   into their real backend. The flow matches the structure of ITFrontDesk's
   existing tool:
 
-    1. appointments.html (this file) — pick location, doctor, exam type,
+    1. appointments.html (this file): pick location, doctor, exam type,
        and date/time. Selections are passed to step 2 via URL query
        params when "Continue" is clicked (see js/appointment.js).
-    2. appointment-details.html — patient info fields + final submit.
+    2. appointment-details.html: patient info fields + final submit.
 
   This "appointment" folder is self-contained: both pages share one
-  script, js/appointment.js, and one stylesheet, css/appointment.css —
+  script, js/appointment.js, and one stylesheet, css/appointment.css,
   each organized in clearly labeled sections so it's easy to find what's
   relevant to each page. They also depend on the shared site-wide files
   ../css/reset.css and ../css/style.css (colors, fonts, navbar, footer,
-  buttons — used by every page on the main site, not just this one).
+  buttons, used by every page on the main site, not just this one).
 
-  PLACEHOLDER LOGIC for ITFrontDesk's developers to confirm/replace —
+  PLACEHOLDER LOGIC for ITFrontDesk's developers to confirm/replace,
   see the section comments inside js/appointment.js for full detail:
-    1. Section 2 (location pre-select/lock) — pre-selects & locks the
+    1. Section 2 (location pre-select/lock): pre-selects & locks the
        Location field from a URL param (e.g. ?location=edm-ne&locked=1).
        This part already works with no backend. It's triggered by the
        per-location "Book Appointment" buttons on locations.html.
        Confirm with ITFrontDesk whether their hosted booking URL can
        accept the same (or an equivalent) parameter.
-    2. Section 3 (date + time availability) — the calendar + time-slot
+    2. Section 3 (date + time availability): the calendar + time-slot
        panel below currently shows FAKE dummy times. Replace
        generateDummySlots() with a real call into your availability
        system.
