@@ -2,15 +2,21 @@
   HANDOFF NOTES FOR ITFRONTDESK INTEGRATION:
 
   This page is linked from the "View or Cancel Existing Appointment"
-  button on both appointments.html and appointment-details.html. It lets
-  a patient look up a previously booked appointment by phone/email + date
-  of birth, see its details, and cancel it.
+  button on both appointments.html and appointment-details.html. The
+  lookup form collects first name, last name, phone, and an age range
+  (0-18 / 19-64 / 65+) instead of a full date of birth, then shows the
+  matching appointment(s) with a cancel action.
 
   PLACEHOLDER: there is no backend here, so the lookup form below does not
-  actually search anything yet. ITFrontDesk's developers need to replace
-  the submit handler in js/existing-appointments.js with a real lookup
-  against their booking system, then render the matching appointment(s)
-  and wire up a real cancel action.
+  actually search anything yet. js/existing-appointments.js renders FAKE
+  mock appointment results based on whatever name is entered, purely to
+  demonstrate the intended UI. ITFrontDesk's developers need to replace
+  the submit handler with a real lookup against their booking system
+  (matching on phone + age range, or swap in a real date-of-birth field
+  if more precision is needed), then render the real matching
+  appointment(s) and wire up a real cancel action (e.g. a DELETE/cancel
+  API call) in place of the current cosmetic-only "Cancel Appointment"
+  button.
 
   Shares css/appointment.css with the booking flow for visual consistency.
 -->
@@ -70,12 +76,35 @@
 
         <div class="form-row">
           <div class="form-group">
+            <label for="lookupFirstName">First Name</label>
+            <input type="text" id="lookupFirstName" name="lookupFirstName" placeholder="Jane" required />
+          </div>
+          <div class="form-group">
+            <label for="lookupLastName">Last Name</label>
+            <input type="text" id="lookupLastName" name="lookupLastName" placeholder="Doe" required />
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
             <label for="lookupPhone">Phone Number</label>
             <input type="tel" id="lookupPhone" name="lookupPhone" placeholder="(780) 000-0000" required />
           </div>
+        </div>
+
+        <div class="form-row single">
           <div class="form-group">
-            <label for="lookupDob">Date of Birth</label>
-            <input type="date" id="lookupDob" name="lookupDob" required />
+            <span class="form-group-label" style="margin-bottom:0;">Age</span>
+            <div class="age-segment-group" role="radiogroup" aria-label="Age range">
+              <input type="radio" id="lookupAge0" name="lookupAgeGroup" value="0-18" required />
+              <label for="lookupAge0">0 – 18</label>
+
+              <input type="radio" id="lookupAge1" name="lookupAgeGroup" value="19-64" />
+              <label for="lookupAge1">19 – 64</label>
+
+              <input type="radio" id="lookupAge2" name="lookupAgeGroup" value="65+" />
+              <label for="lookupAge2">65+</label>
+            </div>
           </div>
         </div>
 

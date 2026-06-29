@@ -527,6 +527,12 @@
   color: #5b6270;
 }
 
+.datetime-day.holiday {
+  background: #ef9a9a;
+  color: #7f1d1d;
+  font-weight: 600;
+}
+
 .datetime-day.selected {
   background: var(--primary);
   color: #fff;
@@ -543,7 +549,8 @@
 
 .datetime-legend {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin-top: 12px;
   font-size: 0.78rem;
   color: var(--text-light);
@@ -569,6 +576,11 @@
 .datetime-legend-dot.unavailable {
   background: #c4c9d1;
   border: 1px solid #5b6270;
+}
+
+.datetime-legend-dot.holiday {
+  background: #ef9a9a;
+  border: 1px solid #7f1d1d;
 }
 
 .datetime-times {
@@ -618,6 +630,31 @@
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
+}
+
+/* ── Time slot loading skeleton ─────────────────────────────────
+   Shown briefly while available times are being fetched, so the
+   patient sees something respond immediately instead of a blank
+   panel during any backend delay. */
+.datetime-slot-skeleton {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  height: 38px;
+  background: linear-gradient(90deg, var(--light-bg) 25%, #ececec 37%, var(--light-bg) 63%);
+  background-size: 400% 100%;
+  animation: datetimeSkeletonShimmer 1.4s ease infinite;
+}
+
+@keyframes datetimeSkeletonShimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .datetime-slot-skeleton {
+    animation: none;
+    background: var(--light-bg);
+  }
 }
 
 .datetime-selected-summary {
@@ -680,6 +717,48 @@
 
 .form-group input[type="date"] {
   cursor: pointer;
+}
+
+/* ── Age segment group (radio buttons styled as pill segments) ── */
+.age-segment-group {
+  display: flex;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.age-segment-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.age-segment-group label {
+  flex: 1;
+  text-align: center;
+  padding: 12px 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-transform: none;
+  letter-spacing: normal;
+  background: #fff;
+  cursor: pointer;
+}
+
+.age-segment-group label:not(:last-of-type) {
+  border-right: 1.5px solid var(--border);
+}
+
+.age-segment-group input[type="radio"]:checked+label {
+  background: var(--primary);
+  color: #fff;
+}
+
+.age-segment-group input[type="radio"]:focus-visible+label {
+  outline: 2px solid var(--blue-600);
+  outline-offset: -2px;
 }
 
 .form-group input[type="date"]::-webkit-calendar-picker-indicator {
@@ -758,6 +837,64 @@
 
 .appt-lookup-result p:last-child {
   margin-bottom: 0;
+}
+
+.appt-lookup-result:has(.appt-found-list) {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.appt-found-intro {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.appt-found-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.appt-found-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 1.25rem;
+  padding: 18px 20px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+
+.appt-found-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.appt-found-row span {
+  color: var(--text-light);
+}
+
+.appt-found-row strong {
+  color: var(--text-dark);
+  text-align: right;
+}
+
+.appt-cancel-btn {
+  margin-top: 14px;
+}
+
+.appt-cancelled-msg {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  text-align: center;
+  padding: 8px 0;
 }
 
 

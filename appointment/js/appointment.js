@@ -21,6 +21,11 @@
      - Section 3: isDateAvailable() and generateDummySlots() return FAKE
        availability/time slots (calendar days are colored green/grey based
        on this). Replace both with real calls to your availability API.
+     - Section 3: getStatutoryHolidays() computes the general Alberta
+       statutory holidays client-side and colors those calendar days red
+       (closed). Confirm the real clinic closure dates with the client —
+       individual locations may close additional days (e.g. over the
+       December holidays) that this placeholder list doesn't include.
      - Section 2: confirm whether your hosted booking URL can accept a
        "location" (or equivalent) query param to pre-select a clinic.
      - The Doctor labels in section 5 (DOCTOR_LABELS) are generic
@@ -203,10 +208,78 @@ if (calDays && calMonthLabel && timePanel) {
     return hash;
   }
 
-  // Dummy placeholder availability — roughly 1 in 4 dates is "unavailable"
-  // (fully booked / closed), purely for demo purposes. Replace with a real
+  // Alberta statutory holidays — clinics are closed on these days.
+  // PLACEHOLDER: this is the general list of Alberta general holidays;
+  // confirm the real clinic closure dates with ITFrontDesk/the client
+  // (e.g. some locations may also close for Boxing Day week, etc.).
+  function nthWeekdayOfMonth(year, month, weekday, n) {
+    const first = new Date(year, month, 1);
+    const offset = (weekday - first.getDay() + 7) % 7;
+    return new Date(year, month, 1 + offset + (n - 1) * 7);
+  }
+
+  function lastWeekdayOfMonth(year, month, weekday) {
+    const last = new Date(year, month + 1, 0);
+    const offset = (last.getDay() - weekday + 7) % 7;
+    return new Date(year, month, last.getDate() - offset);
+  }
+
+  // Meeus/Jones/Butcher algorithm for the Gregorian Easter date.
+  function getEasterSunday(year) {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    const d = Math.floor(b / 4);
+    const e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4);
+    const k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month, day);
+  }
+
+  const holidayCache = {};
+
+  function getStatutoryHolidays(year) {
+    if (holidayCache[year]) return holidayCache[year];
+
+    const easterSunday = getEasterSunday(year);
+    const goodFriday = new Date(easterSunday);
+    goodFriday.setDate(goodFriday.getDate() - 2);
+
+    const dates = [
+      new Date(year, 0, 1),                          // New Year's Day
+      nthWeekdayOfMonth(year, 1, 1, 3),               // Family Day — 3rd Monday of February
+      goodFriday,                                     // Good Friday
+      lastWeekdayOfMonth(year, 4, 1),                 // Victoria Day — last Monday of May
+      new Date(year, 6, 1),                           // Canada Day
+      nthWeekdayOfMonth(year, 8, 1, 1),               // Labour Day — 1st Monday of September
+      nthWeekdayOfMonth(year, 9, 1, 2),               // Thanksgiving — 2nd Monday of October
+      new Date(year, 10, 11),                         // Remembrance Day
+      new Date(year, 11, 25),                         // Christmas Day
+      new Date(year, 11, 26)                          // Boxing Day
+    ];
+
+    const dateStrs = new Set(dates.map(d => toDateStr(d.getFullYear(), d.getMonth(), d.getDate())));
+    holidayCache[year] = dateStrs;
+    return dateStrs;
+  }
+
+  function isHoliday(dateStr) {
+    const year = Number(dateStr.slice(0, 4));
+    return getStatutoryHolidays(year).has(dateStr);
+  }
+
+  // Dummy placeholder availability — roughly 1 in 4 non-holiday dates is
+  // fully booked, purely for demo purposes. Replace with a real
   // availability lookup once a backend exists.
   function isDateAvailable(dateStr) {
+    if (isHoliday(dateStr)) return false;
     return hashDateStr(dateStr) % 4 !== 0;
   }
 
@@ -226,37 +299,63 @@ if (calDays && calMonthLabel && timePanel) {
     return slots.slice(0, count).sort((a, b) => ALL_SLOTS.indexOf(a) - ALL_SLOTS.indexOf(b));
   }
 
+  // Skeleton shown while "fetching" times for the clicked date. There is
+  // no real backend yet (see generateDummySlots() above), so the delay
+  // is simulated — replace TIME_FETCH_DELAY_MS / the setTimeout below
+  // with a real await on the availability API call once one exists.
+  const TIME_FETCH_DELAY_MS = 450;
+  let timeFetchToken = 0;
+
+  function renderTimeSkeleton() {
+    const skeletons = Array.from({ length: 6 }, () => '<div class="datetime-slot-skeleton"></div>').join('');
+    timePanel.innerHTML = `
+      <p class="datetime-times-label">Available Times</p>
+      <div class="datetime-slots">${skeletons}</div>
+    `;
+  }
+
   function renderTimePanel() {
     if (!selectedDateStr) {
       timePanel.innerHTML = '<p class="datetime-times-placeholder">Select a date to see available times.</p>';
       return;
     }
 
-    const slots = generateDummySlots(selectedDateStr);
+    renderTimeSkeleton();
 
-    if (slots.length === 0) {
-      timePanel.innerHTML = '<p class="datetime-times-placeholder">Closed on this day. Please pick another date.</p>';
-      return;
-    }
+    const requestedDateStr = selectedDateStr;
+    const token = ++timeFetchToken;
 
-    const slotsHtml = slots.map(slot =>
-      `<button type="button" class="datetime-slot" data-time="${slot}">${slot}</button>`
-    ).join('');
+    setTimeout(() => {
+      // Bail out if the patient picked a different date while this
+      // (simulated) fetch was still "in flight".
+      if (token !== timeFetchToken || requestedDateStr !== selectedDateStr) return;
 
-    timePanel.innerHTML = `
-      <p class="datetime-times-label">Available Times</p>
-      <div class="datetime-slots">${slotsHtml}</div>
-    `;
+      const slots = generateDummySlots(requestedDateStr);
 
-    timePanel.querySelectorAll('.datetime-slot').forEach(btn => {
-      if (btn.dataset.time === timeInput.value) btn.classList.add('selected');
-      btn.addEventListener('click', () => {
-        timePanel.querySelectorAll('.datetime-slot').forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        timeInput.value = btn.dataset.time;
-        updateDatetimeSummary();
+      if (slots.length === 0) {
+        timePanel.innerHTML = '<p class="datetime-times-placeholder">Closed on this day. Please pick another date.</p>';
+        return;
+      }
+
+      const slotsHtml = slots.map(slot =>
+        `<button type="button" class="datetime-slot" data-time="${slot}">${slot}</button>`
+      ).join('');
+
+      timePanel.innerHTML = `
+        <p class="datetime-times-label">Available Times</p>
+        <div class="datetime-slots">${slotsHtml}</div>
+      `;
+
+      timePanel.querySelectorAll('.datetime-slot').forEach(btn => {
+        if (btn.dataset.time === timeInput.value) btn.classList.add('selected');
+        btn.addEventListener('click', () => {
+          timePanel.querySelectorAll('.datetime-slot').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          timeInput.value = btn.dataset.time;
+          updateDatetimeSummary();
+        });
       });
-    });
+    }, TIME_FETCH_DELAY_MS);
   }
 
   function updateDatetimeSummary() {
@@ -295,10 +394,14 @@ if (calDays && calMonthLabel && timePanel) {
 
       if (thisDate < todayMidnight) {
         btn.disabled = true;
+      } else if (isHoliday(dateStr)) {
+        btn.disabled = true;
+        btn.classList.add('holiday');
+        btn.title = 'Closed — Public Holiday';
       } else if (!isDateAvailable(dateStr)) {
         btn.disabled = true;
         btn.classList.add('unavailable');
-        btn.title = 'Not available';
+        btn.title = 'Fully Booked / Closed';
       } else {
         btn.classList.add('available');
         if (dateStr === selectedDateStr) btn.classList.add('selected');
