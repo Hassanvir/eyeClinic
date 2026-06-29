@@ -7,7 +7,7 @@
    this single file is safe to include on both without errors.
 
    Sections:
-     1. Footer year            — both pages
+     1. Footer year + Eye FAQ navbar dropdown — both pages
      2. Location pre-select/lock (step 1) — REAL logic, no backend needed
      3. Date + time availability (step 1) — FAKE dummy data, see notes
      4. Step 1 → Step 2 handoff (step 1)  — builds query string, navigates
@@ -38,6 +38,47 @@
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+/* ─── Eye FAQ navbar dropdown (all screen sizes) ─────────────────
+   Clicking "Eye FAQ" in the navbar reveals a dropdown panel with
+   links to each eye FAQ topic page. */
+const navEyeFaqToggle = document.getElementById('navEyeFaqToggle');
+const navEyeFaqPanel = document.getElementById('navEyeFaqPanel');
+
+if (navEyeFaqToggle && navEyeFaqPanel) {
+  const openNavPanel = () => {
+    navEyeFaqToggle.setAttribute('aria-expanded', 'true');
+    navEyeFaqPanel.hidden = false;
+    navEyeFaqPanel.classList.remove('is-closing');
+  };
+
+  const closeNavPanel = () => {
+    navEyeFaqToggle.setAttribute('aria-expanded', 'false');
+    navEyeFaqPanel.classList.add('is-closing');
+    setTimeout(() => {
+      navEyeFaqPanel.hidden = true;
+      navEyeFaqPanel.classList.remove('is-closing');
+    }, 220);
+  };
+
+  navEyeFaqToggle.addEventListener('click', () => {
+    if (navEyeFaqPanel.hidden) {
+      openNavPanel();
+    } else {
+      closeNavPanel();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (navEyeFaqPanel.hidden) return;
+    if (!navEyeFaqPanel.contains(e.target) && !navEyeFaqToggle.contains(e.target)) {
+      closeNavPanel();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !navEyeFaqPanel.hidden) closeNavPanel();
+  });
+}
 
 /* ─── 2. City → Location filtering, plus pre-select/lock (step 1) ──
    The City field filters which optgroup of the Location dropdown is

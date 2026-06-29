@@ -64,11 +64,13 @@ body {
   color: var(--accent);
 }
 
-.navbar.scrolled nav a {
+.navbar.scrolled nav a,
+.navbar.scrolled .nav-eye-faq-toggle {
   color: rgba(255, 255, 255, 0.85);
 }
 
-.navbar.scrolled nav a:hover {
+.navbar.scrolled nav a:hover,
+.navbar.scrolled .nav-eye-faq-toggle:hover {
   color: #fff;
 }
 
@@ -96,7 +98,8 @@ nav {
   gap: 1rem;
 }
 
-nav a {
+nav a,
+.nav-eye-faq-toggle {
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-dark);
@@ -104,7 +107,8 @@ nav a {
   transition: color 0.25s;
 }
 
-nav a::after {
+nav a::after,
+.nav-eye-faq-toggle::after {
   content: '';
   position: absolute;
   bottom: -3px;
@@ -115,7 +119,9 @@ nav a::after {
   transition: width 0.25s;
 }
 
-nav a:hover::after {
+nav a:hover::after,
+.nav-eye-faq-toggle:hover::after,
+.nav-eye-faq-toggle[aria-expanded="true"]::after {
   width: 100%;
 }
 
@@ -1047,7 +1053,7 @@ footer {
 .equip-section-alt {
   background: var(--light-bg);
   border-radius: 1.5rem;
-  padding: 2rem;
+  padding: 2rem 1.25rem;
 }
 
 .faq-section-label {
@@ -1521,7 +1527,8 @@ footer {
     gap: 1.5rem;
   }
 
-  nav a {
+  nav a,
+  .nav-eye-faq-toggle {
     font-size: 1.1rem;
   }
 
@@ -1593,7 +1600,8 @@ footer {
     gap: 3.25rem;
   }
 
-  nav a {
+  nav a,
+  .nav-eye-faq-toggle {
     font-size: 0.95rem;
   }
 
@@ -1661,209 +1669,20 @@ footer {
   }
 }
 
-/* ─── Eye FAQ Hint (mobile only) ──────────────────────────────── */
-.eye-faq-hint {
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  max-width: 480px;
-  margin: -1.5rem auto 2rem;
-  line-height: 1.6;
-}
-
-.eye-faq-hint strong {
-  color: var(--text-dark);
-}
-
-@media (min-width: 640px) {
-  .eye-faq-hint {
-    display: none;
-  }
-}
-
-/* ─── Eye FAQ Floating Widget (mobile only) ───────────────────────
-   position: sticky against the viewport's bottom edge, but only
-   while #faq is in view — it tracks the scroll like a fixed button
-   as the user scrolls through that section, then scrolls away
-   normally once they pass the section's top or bottom edge. */
-.eye-faq-widget {
-  position: sticky;
-  bottom: 24px;
-  margin-left: auto;
-  width: fit-content;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-@media (min-width: 640px) {
-  .eye-faq-widget {
-    display: none;
-  }
-}
-
-.eye-faq-toggle {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: var(--primary);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.25s ease, opacity 0.25s ease, box-shadow 0.25s ease;
-  animation: eyeFaqPulse 2.4s ease-in-out infinite;
-}
-
-.eye-faq-toggle img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-}
-
-.eye-faq-toggle:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.24);
-}
-
-.eye-faq-toggle.is-hidden {
-  opacity: 0;
-  transform: scale(0.4);
-  pointer-events: none;
-}
-
-@keyframes eyeFaqPulse {
-
-  0%,
-  100% {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 0 rgba(201, 162, 74, 0.45);
-  }
-
-  50% {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18), 0 0 0 8px rgba(201, 162, 74, 0);
-  }
-}
-
-.eye-faq-panel {
-  width: 280px;
-  max-width: calc(100vw - 48px);
-  background: #fff;
-  border-radius: 0.75rem;
-  border: 1px solid var(--border);
-  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.18);
-  padding: 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transform-origin: bottom right;
-  animation: eyeFaqPanelIn 0.3s ease forwards;
-}
-
-.eye-faq-panel[hidden] {
-  display: none;
-}
-
-.eye-faq-panel.is-closing {
-  animation: eyeFaqPanelOut 0.22s ease forwards;
-}
-
-@keyframes eyeFaqPanelIn {
-  from {
-    opacity: 0;
-    transform: scale(0.85) translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes eyeFaqPanelOut {
-  from {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-
-  to {
-    opacity: 0;
-    transform: scale(0.85) translateY(12px);
-  }
-}
-
-.eye-faq-title {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--primary);
-  padding-bottom: 10px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--border);
-}
-
-.eye-faq-title img {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-}
-
-.eye-faq-panel a {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text-dark);
-  text-decoration: none;
-  padding: 4px 0;
-  transition: color 0.2s, transform 0.2s;
-}
-
-.eye-faq-panel a:hover {
-  color: var(--primary);
-  transform: translateX(-3px);
-}
-
-/* ─── Eye FAQ Navbar Dropdown (medium/large screens) ──────────── */
+/* ─── Eye FAQ Navbar Dropdown (all screen sizes) ──────────────── */
 .nav-eye-faq-dropdown {
-  display: none;
   position: relative;
-}
-
-@media (min-width: 640px) {
-  .nav-eye-faq-dropdown {
-    display: block;
-  }
+  display: flex;
+  align-items: center;
 }
 
 .nav-eye-faq-toggle {
   font-family: inherit;
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--text-dark);
+  line-height: inherit;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: color 0.25s;
-}
-
-.navbar.scrolled .nav-eye-faq-toggle {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.nav-eye-faq-toggle:hover,
-.nav-eye-faq-toggle[aria-expanded="true"] {
-  color: var(--primary);
-}
-
-.navbar.scrolled .nav-eye-faq-toggle:hover,
-.navbar.scrolled .nav-eye-faq-toggle[aria-expanded="true"] {
-  color: #fff;
 }
 
 .nav-eye-faq-panel {
@@ -1872,6 +1691,7 @@ footer {
   left: 50%;
   transform: translateX(-50%);
   width: 260px;
+  max-width: calc(100vw - 32px);
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -1916,7 +1736,8 @@ footer {
   }
 }
 
-.nav-eye-faq-panel a {
+.nav-eye-faq-panel a,
+.navbar.scrolled .nav-eye-faq-panel a {
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-dark);
@@ -1924,7 +1745,8 @@ footer {
   transition: color 0.2s;
 }
 
-.nav-eye-faq-panel a:hover {
+.nav-eye-faq-panel a:hover,
+.navbar.scrolled .nav-eye-faq-panel a:hover {
   color: var(--primary);
 }
 
@@ -1970,5 +1792,5 @@ footer {
   background: #fff;
   border-left: 4px solid var(--accent);
   border-radius: 0.6rem;
-  padding: 16px 20px;
+  padding: 16px 14px;
 }
