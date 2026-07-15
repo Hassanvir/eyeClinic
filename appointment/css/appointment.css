@@ -865,6 +865,7 @@
   border-left: 4px solid var(--accent);
   border-radius: 1.25rem;
   padding: 18px 20px;
+  margin-top: 1rem;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
 }
 
@@ -886,8 +887,49 @@
   text-align: right;
 }
 
-.appt-cancel-btn {
+.appt-card-actions {
+  display: flex;
+  gap: 10px;
   margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.appt-reschedule-btn,
+.appt-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.appt-reschedule-btn {
+  background: var(--primary);
+  color: #fff;
+  border: 1.5px solid var(--primary);
+}
+
+.appt-reschedule-btn:hover {
+  background: #253858;
+  border-color: #253858;
+  box-shadow: 0 3px 12px rgba(51, 76, 117, 0.3);
+}
+
+.appt-cancel-btn {
+  background: #fff;
+  color: #9b1c1c;
+  border: 1.5px solid #fca5a5;
+}
+
+.appt-cancel-btn:hover {
+  background: #fff5f5;
+  border-color: #9b1c1c;
 }
 
 .appt-cancelled-msg {
@@ -895,6 +937,112 @@
   color: var(--text-light);
   text-align: center;
   padding: 8px 0;
+}
+
+
+/* ── Cancel Confirmation Modal ──────────────────────────────────── */
+.cancel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(51, 76, 117, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease forwards;
+}
+
+.cancel-modal-backdrop[hidden] {
+  display: none;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.cancel-modal {
+  background: #fff;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  padding: 24px 20px 20px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 8px 40px rgba(51, 76, 117, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: modalSlideUp 0.22s ease forwards;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+
+.cancel-modal h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.cancel-modal p {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.cancel-modal-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  flex-wrap: nowrap;
+}
+
+.cancel-modal-keep {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.cancel-modal-keep:hover {
+  color: var(--text-dark);
+}
+
+.cancel-modal-confirm {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #9b1c1c;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+
+.cancel-modal-confirm:hover {
+  color: #7f1d1d;
 }
 
 

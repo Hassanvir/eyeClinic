@@ -116,22 +116,112 @@ function renderAppointmentCards(appointments, firstName) {
           <div class="appt-found-row"><span>Location</span><strong>${appt.location}</strong></div>
           <div class="appt-found-row"><span>Doctor</span><strong>${appt.doctor}</strong></div>
           <div class="appt-found-row"><span>Exam</span><strong>${appt.exam}</strong></div>
-          <button type="button" class="submit-btn-outline submit-btn-inline appt-cancel-btn" data-appt-id="${appt.id}">Cancel Appointment</button>
+          <div class="appt-card-actions">
+            <button type="button" class="appt-reschedule-btn" data-appt-id="${appt.id}">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Reschedule
+            </button>
+            <button type="button" class="appt-cancel-btn" data-appt-id="${appt.id}">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Cancel
+            </button>
+          </div>
         </div>
       `).join('')}
     </div>
-    <p class="appt-lookup-note">Need to reschedule instead? Call us at <a href="tel:18883812677" class="link-primary">1-888-381-2677</a>.</p>
   `;
 
   lookupResult.querySelectorAll('.appt-cancel-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.appt-found-card');
-      if (card) {
-        card.innerHTML = `<p class="appt-cancelled-msg">This appointment has been cancelled.</p>`;
-      }
+      const dateTime = card.querySelector('.appt-found-row strong')?.textContent || '';
+      openCancelModal(card, dateTime, false);
+    });
+  });
+
+  lookupResult.querySelectorAll('.appt-reschedule-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.appt-found-card');
+      const dateTime = card.querySelector('.appt-found-row strong')?.textContent || '';
+      openCancelModal(card, dateTime, true);
     });
   });
 }
+
+/* ─── Cancel confirmation modal ───────────────────────────────────
+   Opens a styled modal asking the patient to confirm before
+   cancelling. The actual cancel (card removal) only fires on
+   "Yes, Cancel It". */
+const cancelModalBackdrop = document.getElementById('cancelModalBackdrop');
+const cancelModalBody = document.getElementById('cancelModalBody');
+const cancelModalKeep = document.getElementById('cancelModalKeep');
+const cancelModalConfirm = document.getElementById('cancelModalConfirm');
+
+let pendingCancelCard = null;
+let pendingReschedule = false;
+
+const cancelModalTitle = document.getElementById('cancelModalTitle');
+
+function openCancelModal(card, dateTime, isReschedule) {
+  pendingCancelCard = card;
+  pendingReschedule = isReschedule;
+
+  if (isReschedule) {
+    cancelModalTitle.textContent = 'Reschedule Appointment?';
+    cancelModalBody.textContent = dateTime
+      ? `This will cancel your appointment on ${dateTime} and take you to the booking page to select a new time.`
+      : 'This will cancel your existing appointment and take you to the booking page to select a new time.';
+    cancelModalConfirm.textContent = 'Yes, Reschedule';
+  } else {
+    cancelModalTitle.textContent = 'Cancel Appointment?';
+    cancelModalBody.textContent = dateTime
+      ? `Are you sure you want to cancel your appointment on ${dateTime}? This action cannot be undone.`
+      : 'Are you sure you want to cancel this appointment? This action cannot be undone.';
+    cancelModalConfirm.textContent = 'Yes, Cancel It';
+  }
+
+  cancelModalBackdrop.hidden = false;
+  document.body.style.overflow = 'hidden';
+  cancelModalConfirm.focus();
+}
+
+function closeCancelModal() {
+  cancelModalBackdrop.hidden = true;
+  document.body.style.overflow = '';
+  pendingCancelCard = null;
+  pendingReschedule = false;
+}
+
+if (cancelModalKeep) {
+  cancelModalKeep.addEventListener('click', closeCancelModal);
+}
+
+if (cancelModalConfirm) {
+  cancelModalConfirm.addEventListener('click', () => {
+    if (pendingCancelCard) {
+      pendingCancelCard.innerHTML = `<p class="appt-cancelled-msg">${pendingReschedule ? 'Your appointment has been cancelled. Redirecting to booking…' : 'Your appointment has been cancelled.'}</p>`;
+    }
+    const goReschedule = pendingReschedule;
+    closeCancelModal();
+    if (goReschedule) {
+      setTimeout(() => { window.location.href = 'appointments.html'; }, 1200);
+    }
+  });
+}
+
+if (cancelModalBackdrop) {
+  cancelModalBackdrop.addEventListener('click', (e) => {
+    if (e.target === cancelModalBackdrop) closeCancelModal();
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && cancelModalBackdrop && !cancelModalBackdrop.hidden) closeCancelModal();
+});
 
 const lookupForm = document.getElementById('lookupForm');
 const lookupResult = document.getElementById('lookupResult');

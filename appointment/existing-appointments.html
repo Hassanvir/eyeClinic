@@ -162,6 +162,18 @@
     </div>
   </footer>
 
+  <!-- ─── Cancel Confirmation Modal ──────────────────────────────── -->
+  <div class="cancel-modal-backdrop" id="cancelModalBackdrop" hidden aria-modal="true" role="dialog" aria-labelledby="cancelModalTitle">
+    <div class="cancel-modal">
+      <h3 id="cancelModalTitle">Cancel Appointment?</h3>
+      <p id="cancelModalBody">Are you sure you want to cancel this appointment? This action cannot be undone.</p>
+      <div class="cancel-modal-actions">
+        <button type="button" class="cancel-modal-keep" id="cancelModalKeep">Keep Appointment</button>
+        <button type="button" class="cancel-modal-confirm" id="cancelModalConfirm">Yes, Cancel It</button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/existing-appointments.js"></script>
 </body>
 
