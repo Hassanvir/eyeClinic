@@ -66,6 +66,47 @@ if (navEyeFaqToggle && navEyeFaqPanel) {
   });
 }
 
+/* ─── Policy navbar dropdown (all screen sizes) ──────────────────
+   Mirrors the Eye FAQ dropdown — same open/close/dismiss behaviour. */
+const navPolicyToggle = document.getElementById('navPolicyToggle');
+const navPolicyPanel = document.getElementById('navPolicyPanel');
+
+if (navPolicyToggle && navPolicyPanel) {
+  const openPolicyPanel = () => {
+    navPolicyToggle.setAttribute('aria-expanded', 'true');
+    navPolicyPanel.hidden = false;
+    navPolicyPanel.classList.remove('is-closing');
+  };
+
+  const closePolicyPanel = () => {
+    navPolicyToggle.setAttribute('aria-expanded', 'false');
+    navPolicyPanel.classList.add('is-closing');
+    setTimeout(() => {
+      navPolicyPanel.hidden = true;
+      navPolicyPanel.classList.remove('is-closing');
+    }, 220);
+  };
+
+  navPolicyToggle.addEventListener('click', () => {
+    if (navPolicyPanel.hidden) {
+      openPolicyPanel();
+    } else {
+      closePolicyPanel();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (navPolicyPanel.hidden) return;
+    if (!navPolicyPanel.contains(e.target) && !navPolicyToggle.contains(e.target)) {
+      closePolicyPanel();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !navPolicyPanel.hidden) closePolicyPanel();
+  });
+}
+
 /* ─── Scroll-reveal (IntersectionObserver) ────────────────────── */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {

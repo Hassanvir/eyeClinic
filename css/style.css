@@ -65,12 +65,14 @@ body {
 }
 
 .navbar.scrolled nav a,
-.navbar.scrolled .nav-eye-faq-toggle {
+.navbar.scrolled .nav-eye-faq-toggle,
+.navbar.scrolled .nav-policy-toggle {
   color: rgba(255, 255, 255, 0.85);
 }
 
 .navbar.scrolled nav a:hover,
-.navbar.scrolled .nav-eye-faq-toggle:hover {
+.navbar.scrolled .nav-eye-faq-toggle:hover,
+.navbar.scrolled .nav-policy-toggle:hover {
   color: #fff;
 }
 
@@ -99,7 +101,8 @@ nav {
 }
 
 nav a,
-.nav-eye-faq-toggle {
+.nav-eye-faq-toggle,
+.nav-policy-toggle {
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-dark);
@@ -108,7 +111,8 @@ nav a,
 }
 
 nav a::after,
-.nav-eye-faq-toggle::after {
+.nav-eye-faq-toggle::after,
+.nav-policy-toggle::after {
   content: '';
   position: absolute;
   bottom: -3px;
@@ -121,7 +125,9 @@ nav a::after,
 
 nav a:hover::after,
 .nav-eye-faq-toggle:hover::after,
-.nav-eye-faq-toggle[aria-expanded="true"]::after {
+.nav-eye-faq-toggle[aria-expanded="true"]::after,
+.nav-policy-toggle:hover::after,
+.nav-policy-toggle[aria-expanded="true"]::after {
   width: 100%;
 }
 
@@ -751,6 +757,20 @@ nav a:hover::after,
 .link-primary {
   color: var(--blue-600);
   font-weight: 600;
+}
+
+.info-text {
+  display: inline-flex;
+  align-items: center;
+  background: #fdf6e3;
+  color: #7a5c1e;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  white-space: nowrap;
+  vertical-align: middle;
 }
 
 /* ─── Footer redesign ───────────────────────────────────────── */
@@ -1528,7 +1548,8 @@ footer {
   }
 
   nav a,
-  .nav-eye-faq-toggle {
+  .nav-eye-faq-toggle,
+  .nav-policy-toggle {
     font-size: 1.1rem;
   }
 
@@ -1601,7 +1622,8 @@ footer {
   }
 
   nav a,
-  .nav-eye-faq-toggle {
+  .nav-eye-faq-toggle,
+  .nav-policy-toggle {
     font-size: 0.95rem;
   }
 
@@ -1669,14 +1691,16 @@ footer {
   }
 }
 
-/* ─── Eye FAQ Navbar Dropdown (all screen sizes) ──────────────── */
-.nav-eye-faq-dropdown {
+/* ─── Navbar Dropdowns (Eye FAQ + Policy) ─────────────────────── */
+.nav-eye-faq-dropdown,
+.nav-policy-dropdown {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.nav-eye-faq-toggle {
+.nav-eye-faq-toggle,
+.nav-policy-toggle {
   font-family: inherit;
   line-height: inherit;
   background: none;
@@ -1685,12 +1709,13 @@ footer {
   cursor: pointer;
 }
 
-.nav-eye-faq-panel {
+.nav-eye-faq-panel,
+.nav-policy-panel {
   position: absolute;
   top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%);
-  width: 260px;
+  width: 220px;
   max-width: calc(100vw - 32px);
   background: #fff;
   border: 1px solid var(--border);
@@ -1701,35 +1726,35 @@ footer {
   flex-direction: column;
   gap: 10px;
   z-index: 110;
-  animation: navEyeFaqPanelIn 0.25s ease forwards;
+  animation: navDropdownIn 0.25s ease forwards;
 }
 
-.nav-eye-faq-panel[hidden] {
+.nav-eye-faq-panel[hidden],
+.nav-policy-panel[hidden] {
   display: none;
 }
 
-.nav-eye-faq-panel.is-closing {
-  animation: navEyeFaqPanelOut 0.2s ease forwards;
+.nav-eye-faq-panel.is-closing,
+.nav-policy-panel.is-closing {
+  animation: navDropdownOut 0.2s ease forwards;
 }
 
-@keyframes navEyeFaqPanelIn {
+@keyframes navDropdownIn {
   from {
     opacity: 0;
     transform: translateX(-50%) scale(0.9) translateY(-8px);
   }
-
   to {
     opacity: 1;
     transform: translateX(-50%) scale(1) translateY(0);
   }
 }
 
-@keyframes navEyeFaqPanelOut {
+@keyframes navDropdownOut {
   from {
     opacity: 1;
     transform: translateX(-50%) scale(1) translateY(0);
   }
-
   to {
     opacity: 0;
     transform: translateX(-50%) scale(0.9) translateY(-8px);
@@ -1737,7 +1762,9 @@ footer {
 }
 
 .nav-eye-faq-panel a,
-.navbar.scrolled .nav-eye-faq-panel a {
+.nav-policy-panel a,
+.navbar.scrolled .nav-eye-faq-panel a,
+.navbar.scrolled .nav-policy-panel a {
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-dark);
@@ -1746,7 +1773,9 @@ footer {
 }
 
 .nav-eye-faq-panel a:hover,
-.navbar.scrolled .nav-eye-faq-panel a:hover {
+.nav-policy-panel a:hover,
+.navbar.scrolled .nav-eye-faq-panel a:hover,
+.navbar.scrolled .nav-policy-panel a:hover {
   color: var(--primary);
 }
 

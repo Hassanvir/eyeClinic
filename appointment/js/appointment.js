@@ -39,6 +39,18 @@
        number/ID it returns instead.
    ════════════════════════════════════════════════════════════════ */
 
+/* ─── 0. Shared utility ───────────────────────────────────────── */
+// Escapes a string for safe insertion into HTML text content (prevents XSS
+// from URL query params being rendered via innerHTML).
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /* ─── 1. Footer year ──────────────────────────────────────────── */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -82,6 +94,47 @@ if (navEyeFaqToggle && navEyeFaqPanel) {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !navEyeFaqPanel.hidden) closeNavPanel();
+  });
+}
+
+/* ─── Policy navbar dropdown (all screen sizes) ──────────────────
+   Mirrors the Eye FAQ dropdown — same open/close/dismiss behaviour. */
+const navPolicyToggle = document.getElementById('navPolicyToggle');
+const navPolicyPanel = document.getElementById('navPolicyPanel');
+
+if (navPolicyToggle && navPolicyPanel) {
+  const openPolicyPanel = () => {
+    navPolicyToggle.setAttribute('aria-expanded', 'true');
+    navPolicyPanel.hidden = false;
+    navPolicyPanel.classList.remove('is-closing');
+  };
+
+  const closePolicyPanel = () => {
+    navPolicyToggle.setAttribute('aria-expanded', 'false');
+    navPolicyPanel.classList.add('is-closing');
+    setTimeout(() => {
+      navPolicyPanel.hidden = true;
+      navPolicyPanel.classList.remove('is-closing');
+    }, 220);
+  };
+
+  navPolicyToggle.addEventListener('click', () => {
+    if (navPolicyPanel.hidden) {
+      openPolicyPanel();
+    } else {
+      closePolicyPanel();
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (navPolicyPanel.hidden) return;
+    if (!navPolicyPanel.contains(e.target) && !navPolicyToggle.contains(e.target)) {
+      closePolicyPanel();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !navPolicyPanel.hidden) closePolicyPanel();
   });
 }
 
@@ -537,10 +590,10 @@ if (apptStep2Form && summaryEl) {
     });
 
     summaryEl.innerHTML = `
-      <div class="appt-summary-row"><span>Location</span><strong>${LOCATION_LABELS[location] || location}</strong></div>
-      <div class="appt-summary-row"><span>Doctor</span><strong>${DOCTOR_LABELS[doctor] || doctor || 'Any Doctor'}</strong></div>
-      <div class="appt-summary-row"><span>Exam</span><strong>${EXAM_LABELS[examType] || examType}</strong></div>
-      <div class="appt-summary-row"><span>Date &amp; Time</span><strong>${friendlyDate} at ${preferredTime}</strong></div>
+      <div class="appt-summary-row"><span>Location</span><strong>${escHtml(LOCATION_LABELS[location] || location)}</strong></div>
+      <div class="appt-summary-row"><span>Doctor</span><strong>${escHtml(DOCTOR_LABELS[doctor] || doctor || 'Any Doctor')}</strong></div>
+      <div class="appt-summary-row"><span>Exam</span><strong>${escHtml(EXAM_LABELS[examType] || examType)}</strong></div>
+      <div class="appt-summary-row"><span>Date &amp; Time</span><strong>${escHtml(friendlyDate)} at ${escHtml(preferredTime)}</strong></div>
     `;
 
     // Carry step 1 selections forward as hidden inputs so the final
@@ -587,6 +640,12 @@ if (apptStep2Form && summaryEl) {
 const confirmationTable = document.getElementById('confirmationTable');
 const confirmationDateBadge = document.getElementById('confirmationDateBadge');
 
+const AGE_LABELS = {
+  '0-18': '0 – 18',
+  '19-64': '19 – 64',
+  '65+': '65+'
+};
+
 if (confirmationTable) {
   const params = new URLSearchParams(window.location.search);
   const firstName = params.get('firstName') || '';
@@ -596,6 +655,7 @@ if (confirmationTable) {
   const examType = params.get('examType');
   const preferredDate = params.get('preferredDate');
   const preferredTime = params.get('preferredTime');
+  const ageCategory = params.get('ageCategory') || '';
 
   if (!location || !examType || !preferredDate || !preferredTime) {
     window.location.href = 'appointments.html';
@@ -616,29 +676,34 @@ if (confirmationTable) {
 
       confirmationDateBadge.innerHTML = `
         <div class="appt-date-badge-calendar">
-          <span class="appt-date-badge-month">${monthAbbr}</span>
-          <span class="appt-date-badge-day">${d}</span>
+          <span class="appt-date-badge-month">${escHtml(monthAbbr)}</span>
+          <span class="appt-date-badge-day">${escHtml(String(d))}</span>
         </div>
         <div class="appt-date-badge-info">
-          <p class="appt-date-badge-weekday">${weekday}</p>
+          <p class="appt-date-badge-weekday">${escHtml(weekday)}</p>
           <p class="appt-date-badge-time">
             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <circle cx="12" cy="12" r="9" />
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 7v5l3 3" />
             </svg>
-            ${preferredTime}
+            ${escHtml(preferredTime)}
           </p>
         </div>
       `;
     }
 
+    const ageLine = ageCategory
+      ? `<div class="appt-confirmation-row"><span>Age Category</span><strong>${escHtml(AGE_LABELS[ageCategory] || ageCategory)}</strong></div>`
+      : '';
+
     confirmationTable.innerHTML = `
-      <div class="appt-confirmation-row"><span>Name</span><strong>${firstName} ${lastName}</strong></div>
+      <div class="appt-confirmation-row"><span>Name</span><strong>${escHtml(firstName)} ${escHtml(lastName)}</strong></div>
       <div class="appt-confirmation-row"><span>Confirmation #</span><strong>${confirmationNumber}</strong></div>
-      <div class="appt-confirmation-row"><span>Date &amp; Time</span><strong>${friendlyDate} at ${preferredTime}</strong></div>
-      <div class="appt-confirmation-row"><span>Location</span><strong>${LOCATION_LABELS[location] || location}</strong></div>
-      <div class="appt-confirmation-row"><span>Doctor</span><strong>${DOCTOR_LABELS[doctor] || doctor || 'Any Doctor'}</strong></div>
-      <div class="appt-confirmation-row"><span>Exam</span><strong>${EXAM_LABELS[examType] || examType}</strong></div>
+      <div class="appt-confirmation-row"><span>Date &amp; Time</span><strong>${escHtml(friendlyDate)} at ${escHtml(preferredTime)}</strong></div>
+      <div class="appt-confirmation-row"><span>Location</span><strong>${escHtml(LOCATION_LABELS[location] || location)}</strong></div>
+      <div class="appt-confirmation-row"><span>Doctor</span><strong>${escHtml(DOCTOR_LABELS[doctor] || doctor || 'Any Doctor')}</strong></div>
+      <div class="appt-confirmation-row"><span>Exam</span><strong>${escHtml(EXAM_LABELS[examType] || examType)}</strong></div>
+      ${ageLine}
     `;
   }
 }
