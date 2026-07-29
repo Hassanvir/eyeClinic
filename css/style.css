@@ -21,7 +21,8 @@
 #counter,
 #equipments,
 #about-optometrist,
-#faq {
+#faq,
+#feedback {
   scroll-margin-top: 72px;
 }
 
@@ -901,7 +902,8 @@ footer {
   gap: 3rem;
 }
 
-.locations-notice {
+.locations-notice,
+.accordion-notice {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -916,10 +918,15 @@ footer {
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
 }
 
-.locations-notice svg {
+.locations-notice svg,
+.accordion-notice svg {
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--primary);
+}
+
+.accordion-notice {
+  margin-top: 0.85rem;
 }
 
 .loc-group-header {
