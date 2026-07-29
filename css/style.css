@@ -371,7 +371,7 @@ nav a:hover::after,
 }
 
 .hero-subtitle {
-  font-size: clamp(1.08rem, 1.6vw, 1.13rem);
+  font-size: clamp(1.02rem, 1.6vw, 1.1rem);
   color: #374151;
   font-weight: 400;
   max-width: min(100%, 440px);
@@ -943,6 +943,13 @@ footer {
 
 .loc-group-header svg {
   color: var(--primary);
+}
+
+.loc-group-header h2 {
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  margin: 0;
 }
 
 .loc-cards {
