@@ -1,4 +1,4 @@
-/* ─── Navbar scroll behaviour ─────────────────────────────────── */
+/*  Navbar scroll behaviour  */
 const navbar = document.getElementById('navbar');
 
 if (navbar) {
@@ -20,11 +20,11 @@ if (navbar) {
 }
 
 
-/* ─── Footer year ─────────────────────────────────────────────── */
+/*  Footer year  */
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-/* ─── Eye FAQ navbar dropdown (all screen sizes) ─────────────────
+/*  Eye FAQ navbar dropdown (all screen sizes) 
    Clicking "Eye FAQ" in the navbar reveals a dropdown panel with
    links to each eye FAQ topic page. */
 const navEyeFaqToggle = document.getElementById('navEyeFaqToggle');
@@ -66,8 +66,8 @@ if (navEyeFaqToggle && navEyeFaqPanel) {
   });
 }
 
-/* ─── Policy navbar dropdown (all screen sizes) ──────────────────
-   Mirrors the Eye FAQ dropdown — same open/close/dismiss behaviour. */
+/*  Policy navbar dropdown (all screen sizes) 
+   Mirrors the Eye FAQ dropdown - same open/close/dismiss behaviour. */
 const navPolicyToggle = document.getElementById('navPolicyToggle');
 const navPolicyPanel = document.getElementById('navPolicyPanel');
 
@@ -107,7 +107,7 @@ if (navPolicyToggle && navPolicyPanel) {
   });
 }
 
-/* ─── Scroll-reveal (IntersectionObserver) ────────────────────── */
+/*  Scroll-reveal (IntersectionObserver)  */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -119,7 +119,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-/* ─── Counter / count-up animation ───────────────────────────── */
+/*  Counter / count-up animation  */
 function animateCount(el, target, duration) {
   const start     = performance.now();
   const startVal  = 0;
@@ -155,7 +155,7 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.counter-card').forEach(card => counterObserver.observe(card));
 
-/* ─── Hero word-slider ────────────────────────────────────────── */
+/*  Hero word-slider  */
 (function () {
   const container = document.querySelector('.slide-container');
   if (!container) return;
@@ -179,7 +179,7 @@ document.querySelectorAll('.counter-card').forEach(card => counterObserver.obser
   }, 2800);
 })();
 
-/* ─── FAQ Accordion ───────────────────────────────────────────── */
+/*  FAQ Accordion  */
 document.querySelectorAll('.accordion-trigger').forEach(trigger => {
   trigger.addEventListener('click', () => {
     const item = trigger.closest('.accordion-item');
@@ -194,9 +194,3 @@ document.querySelectorAll('.accordion-trigger').forEach(trigger => {
     if (!isOpen) item.classList.add('open');
   });
 });
-
-/* ─── Appointment booking flow ──────────────────────────────────
-   All appointment-page logic (location pre-select/lock, date+time
-   picker, step navigation, and submit handling) lives in the
-   self-contained appointment/ folder: appointment/js/appointment.js
-   and appointment/css/appointment.css — not loaded on any other page. */

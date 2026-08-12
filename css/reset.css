@@ -3,7 +3,6 @@
    Loaded before style.css on every page.
 ──────────────────────────────────────────────────────────────── */
 
-/* 1. Box model */
 *,
 *::before,
 *::after {
