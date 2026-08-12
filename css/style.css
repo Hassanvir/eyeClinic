@@ -1499,7 +1499,7 @@ footer {
 }
 
 .accordion-item.open .accordion-body {
-  max-height: 600px;
+  max-height: 1200px;
   padding: 0 1.5rem 1.25rem;
 }
 
