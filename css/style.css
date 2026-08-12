@@ -74,12 +74,21 @@ body {
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.08rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.25;
   max-width: 8.75rem;
   transition: transform 0.3s;
+}
+
+.logo img {
+  display: none;
+  height: 2rem;
+  width: auto;
 }
 
 .logo:hover {
@@ -822,10 +831,18 @@ footer {
 }
 
 .footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
   color: #fff;
   margin-bottom: 0.5rem;
+}
+
+.footer-logo img {
+  height: 2rem;
+  width: auto;
 }
 
 .footer-logo span {
@@ -1649,6 +1666,13 @@ footer {
   .footer-inner .footer-col:nth-child(3) {
 
     justify-self: center;
+  }
+}
+
+/* ── Logo image: 960px and above ── */
+@media (min-width: 960px) {
+  .logo img {
+    display: block;
   }
 }
 
